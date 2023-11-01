@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="3dp" >
+    <TextView android:id="@+id/txtSoloMsg"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@android:color/white" />
+    <ImageView android:id="@+id/imgSolo"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_gravity="center|fill"
+        android:layout_weight="2" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <Button android:id="@+id/btnSoloBack"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Back" />
+        <Button android:id="@+id/btnSoloDelete"
+            android:layout_width="100dip"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <!--    tạo biến dạng string để gọi ở đây-->
+    <string name="app_name">ProjectAlbum</string>
+    <string name="ex_name_folder">Tất cả</string>
+</resources>
