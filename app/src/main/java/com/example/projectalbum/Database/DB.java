@@ -85,11 +85,11 @@ public class DB {
     public static List<Album> getListAlbums()
     {
         List<Album> albumList = new ArrayList<>();
-        albumList.add(new Album(1, R.drawable.ic_launcher_foreground, "Tất cả"));
-        albumList.add(new Album(2, R.drawable.ic_launcher_background, "Camera"));
-        albumList.add(new Album(3, R.drawable.ic_launcher_foreground, "Screen short"));
-        albumList.add(new Album(4, R.drawable.custom_item_album, "Đã thích"));
-        albumList.add(new Album(5, R.drawable.ic_launcher_foreground, "Riêng tư"));
+        albumList.add(new Album(1, getAvatarAlbum(1), "Tất cả"));
+        albumList.add(new Album(2, getAvatarAlbum(2), "Camera"));
+        albumList.add(new Album(3, getAvatarAlbum(3), "Screen short"));
+        albumList.add(new Album(4, getAvatarAlbum(4), "Đã thích"));
+        albumList.add(new Album(5, getAvatarAlbum(5), "Riêng tư"));
         return albumList;
     }
 
@@ -120,5 +120,25 @@ public class DB {
         photoList.add(new Photo(1, "photo1", img, img));
         photoList.add(new Photo(1, "photo1", img, img));
         return photoList;
+    }
+    public static Integer getAvatarAlbum(int id)
+    {
+        if(id == 1)
+        {
+            return R.drawable.lake_1;
+        }
+        if(id == 2)
+        {
+            return R.drawable.lake_2;
+        }
+        if(id == 3)
+        {
+            return R.drawable.lake_3;
+        }
+        if(id == 4)
+        {
+            return R.drawable.lake_1;
+        }
+        return R.drawable.custom_item_album;
     }
 }
