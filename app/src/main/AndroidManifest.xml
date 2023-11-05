@@ -18,6 +18,9 @@
             android:name=".Activity.ListAlbumActivity"
             android:exported="false" />
         <activity
+            android:name=".Activity.SlideShow"
+            android:exported="false"/>
+        <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />
         <activity
