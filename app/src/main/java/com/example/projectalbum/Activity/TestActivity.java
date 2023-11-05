@@ -10,7 +10,7 @@ import android.widget.Button;
 import com.example.projectalbum.R;
 
 public class TestActivity extends AppCompatActivity {
-    Button btn_main, btn_testAlbum;
+    Button btn_main, btn_testAlbum, btn_slideshow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,15 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TestActivity.this, ListAlbumActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_slideshow = (Button) findViewById(R.id.btn_slideshow);
+        btn_slideshow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(TestActivity.this, SlideShow.class);
                 startActivity(intent);
             }
         });
