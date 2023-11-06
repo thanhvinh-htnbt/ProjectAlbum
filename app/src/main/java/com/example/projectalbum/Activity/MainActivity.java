@@ -1,9 +1,15 @@
 package com.example.projectalbum.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.projectalbum.Adapter.MyImageAdapter;
 import com.example.projectalbum.Database.DB;
+import com.example.projectalbum.Interface.AdapterListener;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
@@ -30,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 //    Integer[] largeImages = {R.drawable.lake_1, R.drawable.lake_2, R.drawable.lake_3, R.drawable.mountain_1};
     List<Photo>photoList = new ArrayList<>();
 
+    List<String> imagesPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,12 +55,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
-        gridview = (GridView) findViewById(R.id.gv_ListItems);
-        gridview.setAdapter(new MyImageAdapter(this, photoList));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        imagesPath = DB.getImgpath(this);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewImg);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+
+        MyImageAdapter adapterClass = new MyImageAdapter(this, imagesPath, new AdapterListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { showBigScreen(position); }
+            public void onItemClick(Integer data) {
+                // Code ấn vào ảnh ở đây
+            }
         });
+        recyclerView.setAdapter(adapterClass);
+//        gridview = (GridView) findViewById(R.id.gv_ListItems);
+//        gridview.setAdapter(new MyImageAdapter(this, photoList));
+//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) { showBigScreen(position); }
+//        });
         this.btn_album = (Button) findViewById(R.id.btn_album);
         this.btn_album.setOnClickListener(new View.OnClickListener() {
             @Override

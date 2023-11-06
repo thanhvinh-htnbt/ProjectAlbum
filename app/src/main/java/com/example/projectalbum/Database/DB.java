@@ -1,15 +1,19 @@
 package com.example.projectalbum.Database;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -141,4 +145,28 @@ public class DB {
         }
         return R.drawable.custom_item_album;
     }
+
+    public static List<String> getImgpath(Context context){
+
+        List<String> pathImg = new ArrayList<>();
+
+        String[] projection = {MediaStore.MediaColumns.DATA};
+
+        String orderBy = MediaStore.Video.Media.DATE_TAKEN;
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,projection,
+                null,null,orderBy + " DESC");
+        if (cursor != null){
+            while (cursor.moveToNext()){
+                @SuppressLint("Range") String imagePath = cursor.getString
+                        (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                Log.d("Check", imagePath);
+                pathImg.add(imagePath);
+            }
+
+        }
+        return pathImg;
+    }
+
+
+
 }
