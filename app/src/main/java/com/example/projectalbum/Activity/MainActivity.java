@@ -1,11 +1,16 @@
 package com.example.projectalbum.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,6 +21,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.projectalbum.Adapter.MyImageAdapter;
 import com.example.projectalbum.Database.DB;
@@ -56,18 +62,20 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        imagesPath = DB.getImgpath(this);
+        //Kiểm tra quyền truy cập bộ nhớ
+        if(ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},101);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewImg);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        }
+        else
+        {
 
-        MyImageAdapter adapterClass = new MyImageAdapter(this, imagesPath, new AdapterListener() {
-            @Override
-            public void onItemClick(Integer data) {
-                // Code ấn vào ảnh ở đây
-            }
-        });
-        recyclerView.setAdapter(adapterClass);
+            loadImage();
+        }
+
 //        gridview = (GridView) findViewById(R.id.gv_ListItems);
 //        gridview.setAdapter(new MyImageAdapter(this, photoList));
 //        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,6 +90,41 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void loadImage() {
+        imagesPath = DB.getImgpath(this);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewImg);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        MyImageAdapter adapterClass = new MyImageAdapter(this, imagesPath, new AdapterListener() {
+            @Override
+            public void onItemClick(Integer data) {
+                // Code ấn vào ảnh ở đây
+            }
+        });
+        recyclerView.setAdapter(adapterClass);
+    }
+
+
+    //Check quyền tuy cập
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode,permissions, grantResults);
+
+        if(requestCode == 101)
+        {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this,"Read external permission granted", Toast.LENGTH_SHORT).show();
+                loadImage();
+            }
+            else
+            {
+                Toast.makeText(this,"Read external permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
     private void showBigScreen(int position) {
         // show the selected picture as a single frame in the second layout
