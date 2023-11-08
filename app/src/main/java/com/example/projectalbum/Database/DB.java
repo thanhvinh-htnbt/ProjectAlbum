@@ -97,19 +97,24 @@ public class DB {
         return albumList;
     }
 
-    public static List<Photo> getListPhoto()
+    public static List<Photo> getListPhoto(Context context)
     {
         List<Photo> photoList = new ArrayList<>();
-        photoList.add(new Photo(1, "photo1", R.drawable.lake_1, R.drawable.lake_1));
-        photoList.add(new Photo(2, "photo2", R.drawable.lake_2, R.drawable.lake_2));
-        photoList.add(new Photo(3, "photo3", R.drawable.lake_3, R.drawable.lake_3));
+        List<String> filePathList = DB.getImgpath(context);
+
+        for(int i = 0; i < filePathList.size(); i++){
+            photoList.add(new Photo(i, "photo" + i, filePathList.get(i), R.drawable.lake_1));
+        }
+//        photoList.add(new Photo(1, "photo1", R.drawable.lake_1, R.drawable.lake_1));
+//        photoList.add(new Photo(2, "photo2", R.drawable.lake_2, R.drawable.lake_2));
+//        photoList.add(new Photo(3, "photo3", R.drawable.lake_3, R.drawable.lake_3));
         return photoList;
     }
-    public static List<Photo> getListPhotoOfIdAlbum(int id)
+    public static List<Photo> getListPhotoOfIdAlbum(int id, Context context)
     {
         if(id == 1)
         {
-            return getListPhoto();
+            return getListPhoto(context);
         }
         Integer img = R.drawable.lake_1;
         if(id == 2)
@@ -120,9 +125,9 @@ public class DB {
             img = R.drawable.lake_3;
         }
         List<Photo> photoList = new ArrayList<>();
-        photoList.add(new Photo(1, "photo1", img, img));
-        photoList.add(new Photo(1, "photo1", img, img));
-        photoList.add(new Photo(1, "photo1", img, img));
+//        photoList.add(new Photo(1, "photo1", img, img));
+//        photoList.add(new Photo(1, "photo1", img, img));
+//        photoList.add(new Photo(1, "photo1", img, img));
         return photoList;
     }
     public static Integer getAvatarAlbum(int id)

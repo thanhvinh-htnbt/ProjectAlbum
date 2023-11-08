@@ -42,6 +42,7 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String imagePath = imgpaths.get(position);
+        //truyền ảnh vào ImageView
         Glide.with(context).load(imagePath).into(holder.imageView);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +88,7 @@ public class MyImageAdapter extends RecyclerView.Adapter<MyImageAdapter.ViewHold
 //            imageView.setLayoutParams(new GridView.LayoutParams(gridSize, gridSize)); imageView.setScaleType(ImageView.ScaleType.FIT_XY); imageView.setPadding(5, 5, 5, 5);
 //        }
 //        else { imageView = (ImageView) convertView; }
-//        imageView.setImageResource(photoList.get(position).getThumbnails()); imageView.setId(position);
+//        imageView.setImageResource(photoList.get(position).getfilePath()); imageView.setId(position);
 //        return imageView;
 //    }//getView
 }

@@ -28,9 +28,9 @@ public class SlideShow extends AppCompatActivity {
         if (extras != null) {
             Integer value = extras.getInt("id");
             // Sử dụng giá trị nhận được
-            photoList = DB.getListPhoto();
+            photoList = DB.getListPhoto(this);
         } else {
-            photoList = DB.getListPhoto();
+            photoList = DB.getListPhoto(this);
         }
 
         setContentView(R.layout.slideshow);
