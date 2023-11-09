@@ -4,11 +4,15 @@ package com.example.projectalbum.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +34,9 @@ import com.example.projectalbum.Interface.AdapterListener;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +54,7 @@ public class show_all_photo extends Fragment {
     LinearLayout  layout_show_all_photo;
     TextView txtSoloMsg;
     ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete;
+    Button btnSoloBack, btnDelete, btnShare;
     Bundle myOriginalMemoryBundle;
     List<Photo>photoList = new ArrayList<>();
 
@@ -158,7 +165,8 @@ public class show_all_photo extends Fragment {
         imgSoloPhoto.setImageResource( photoList.get(position).getLargeImages() );
         // set GO BACK button to return to layout1 (GridView)
         btnSoloBack = (Button) main.findViewById(R.id.btnSoloBack);
-        btnDelete=(Button) main.findViewById(R.id.btnSoloDelete);
+        btnDelete= (Button) main.findViewById(R.id.btnSoloDelete);
+        btnShare = (Button) main.findViewById(R.id.btn_share_image);
         btnSoloBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,5 +179,47 @@ public class show_all_photo extends Fragment {
 
             }
         });
+
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
+                Bitmap bitmap = bitmapDrawable.getBitmap();
+                shareImageAndText(bitmap);
+            }
+
+        });
+    }
+    private void shareImageAndText(Bitmap bitmap) {
+        Uri uri = getImageToShare(bitmap);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_TEXT, "Image Text");
+        intent.putExtra(Intent.EXTRA_STREAM, "Image Subject");
+
+        intent.setType("image/*");
+
+        startActivity(Intent.createChooser(intent, "Share via"));
+    }
+
+    private Uri getImageToShare(Bitmap bitmap) {
+        File folder = new File(main.getCacheDir(),"images");
+        Uri uri = null;
+
+        try {
+            folder.mkdirs();
+            File file = new File(folder,"image.jpg");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
+
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
+            uri = FileProvider.getUriForFile(context,"com.example.projectalbum", file);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return uri;
     }
 }

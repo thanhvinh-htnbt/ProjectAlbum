@@ -27,6 +27,11 @@
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:text="Delete" />
+        <Button android:id="@+id/btn_share_image"
+            android:layout_width="100dip"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="Share" />
     </LinearLayout>
 
 </LinearLayout>

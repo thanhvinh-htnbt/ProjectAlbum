@@ -7,7 +7,13 @@
     android:orientation="vertical"
     android:padding="3dp"
     tools:context=".Activity.MainActivity">
-
+    <TextView
+        android:id="@+id/tv_photos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ảnh"
+        android:textSize="70dp"
+        android:textAlignment="center"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
