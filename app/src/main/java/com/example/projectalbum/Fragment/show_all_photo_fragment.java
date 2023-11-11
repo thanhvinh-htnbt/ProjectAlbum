@@ -124,16 +124,17 @@ public class show_all_photo_fragment extends Fragment {
         List <Photo> imagesPath = DB.getListPhoto(main);
 
         RecyclerView recyclerView = layout.findViewById(R.id.recyclerViewImg);
-//        recyclerView.setLayoutManager(new GridLayoutManager(main,3));
+        recyclerView.setLayoutManager(new GridLayoutManager(main,3));
 ////        Photo_Adapter adapterClass = new Photo_Adapter(main, imagesPath, new AdapterListener() {
-//        Photo_Adapter adapterClass = new Photo_Adapter(main, imagesPath);
+ //       Photo_Adapter adapterClass = new Photo_Adapter(main, imagesPath);
 ////        {
 ////            @Override
+
 ////            public void onItemClick(Integer data) {
 ////                // Code ấn vào ảnh ở đây
 ////            }
 ////        });
-//        recyclerView.setAdapter(adapterClass);
+ //       recyclerView.setAdapter(adapterClass);
         Category_Adapter categoryAdapter = new Category_Adapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
