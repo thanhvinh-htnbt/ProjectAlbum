@@ -2,28 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.projectalbum">
+
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
 
     <application
-        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectAlbum"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.BigImage"
+            android:exported="false" />
+        <activity
             android:name=".Activity.ListAlbumActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.SlideShow"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"
             android:exported="false" />
@@ -36,15 +40,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.example.projectalbum"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.projectalbum"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/paths"/>
+                android:resource="@xml/paths" />
         </provider>
     </application>
-    
+
 </manifest>
