@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
@@ -35,9 +36,10 @@ public class BigImage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //context để lấy ảnh
-        context=this.context;
         setContentView(R.layout.activity_solo_image);
+
+        //context để lấy ảnh
+        context =this;
 
         photoList=getListPhoto(context);
         txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
@@ -45,18 +47,18 @@ public class BigImage extends AppCompatActivity {
 
 
 
-        // Truyền vị trí kiểu integer qua Intent dưới dạng extra ở intent trước
-        //intent.putExtra("POSITION", data);
+        // Truyền vị trí kiểu string qua Intent dưới dạng extra ở intent trước
+        //Nếu cần thêm data gì thì thêm vào intent
+        //intent.putExtra("imagePath", data);
 
 
 
-        // Nhận giá trị kiểu integer từ Intent trước
-        int position = getIntent().getIntExtra("POSITION", 0);
-
+        // Nhận giá trị kiểu string từ Intent trước
+        String imagePath = getIntent().getStringExtra("imagePath");
         // set caption-and-large picture
-        txtSoloMsg.setText(" Position= " + position + " " + photoList.get(position).getName());
+        txtSoloMsg.setText(" Position= " + 1);
         //truyền ảnh vào
-        imgSoloPhoto.setImageResource( photoList.get(position).getLargeImages() );
+        Glide.with(context).load(imagePath).into(imgSoloPhoto);
 
         btnSoloBack = (Button) findViewById(R.id.btnSoloBack);
         btnDelete= (Button) findViewById(R.id.btnSoloDelete);
@@ -78,12 +80,48 @@ public class BigImage extends AppCompatActivity {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
-                //Bitmap bitmap = bitmapDrawable.getBitmap();
-                //shareImageAndText(bitmap);
+                //Lấy ảnh để share
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
+                Bitmap bitmap = bitmapDrawable.getBitmap();
+                shareImageAndText(bitmap);
             }
 
         });
     }
 
+    //Share dữ liệu
+    private void shareImageAndText(Bitmap bitmap) {
+        Uri uri = getImageToShare(bitmap);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.putExtra(Intent.EXTRA_TEXT, "Image Text");
+        intent.putExtra(Intent.EXTRA_STREAM, "Image Subject");
+
+        intent.setType("image/*");
+
+        startActivity(Intent.createChooser(intent, "Share via"));
+    }
+
+
+    //Lấy ảnh để share
+    private Uri getImageToShare(Bitmap bitmap) {
+        File folder = new File(getCacheDir(),"images");
+        Uri uri = null;
+
+        try {
+            folder.mkdirs();
+            File file = new File(folder,"image.jpg");
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
+
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
+            uri = FileProvider.getUriForFile(context,"com.example.projectalbum", file);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return uri;
+    }
 }

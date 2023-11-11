@@ -1,6 +1,9 @@
 package com.example.projectalbum.Adapter;
 
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.projectalbum.Interface.AdapterListener;
+import com.example.projectalbum.Activity.BigImage;
 import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
@@ -21,7 +24,6 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
 
     private Context context;
     private List<Photo> photoList;
-    protected AdapterListener adapterListener;
     private List<Category> listCategory;
 
 //    public Photo_Adapter(Context context, List<Photo> photoList, AdapterListener adapterListener) {
@@ -50,15 +52,21 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String imagePath = photoList.get(position).getfilePath();
+
         //truyền ảnh vào ImageView
         Glide.with(context).load(imagePath).into(holder.imageView);
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //adapterListener.onItemClick(position);
-//            }
-//        });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(context !=null) {
+                    Intent intent = new Intent(context, BigImage.class);
+                    intent.putExtra("imagePath", imagePath);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
+            }
+        });
 
     }
 

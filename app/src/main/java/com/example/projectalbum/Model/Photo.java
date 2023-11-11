@@ -13,7 +13,6 @@ public class Photo {
     //để test sẽ thay đổi sau
     private String filePath;
 
-    private Integer largeImages;
 
     public Photo(){}
 
@@ -45,9 +44,9 @@ public class Photo {
         return filePath;
     }
 
-    public Integer getLargeImages() {
-        return largeImages;
-    }
+//    public Integer getLargeImages() {
+//        return largeImages;
+//    }
 
     public String getDateTaken() {
         return dateTaken;

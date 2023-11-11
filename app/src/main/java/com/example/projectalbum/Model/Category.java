@@ -13,7 +13,9 @@ public class Category {
     public void setNameCategory(String nameCategory) {
         this.nameCategory = nameCategory;
     }
-
+    public Category(List<Photo> listPhoto) {
+        this.listPhoto = listPhoto;
+    }
     public List<Photo> getListPhoto() {
         return listPhoto;
     }
@@ -29,7 +31,5 @@ public class Category {
         this.listPhoto = listPhoto;
     }
 
-    public Category(List<Photo> listPhoto) {
-        this.listPhoto = listPhoto;
-    }
+
 }

@@ -108,36 +108,19 @@ public class show_all_photo_fragment extends Fragment {
             loadImage(layout_show_all_photo);
         }
 
-//        this.btn_album = (Button) layout_show_all_photo.findViewById(R.id.btn_album);
-//        this.btn_album.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(main, ListAlbumActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+
         return layout_show_all_photo;
     }
     private void loadImage(LinearLayout layout) {
 
-
-        List <Photo> imagesPath = DB.getListPhoto(main);
-
+        //Chuẩn bị recyclerView
         RecyclerView recyclerView = layout.findViewById(R.id.recyclerViewImg);
-        recyclerView.setLayoutManager(new GridLayoutManager(main,3));
-////        Photo_Adapter adapterClass = new Photo_Adapter(main, imagesPath, new AdapterListener() {
- //       Photo_Adapter adapterClass = new Photo_Adapter(main, imagesPath);
-////        {
-////            @Override
 
-////            public void onItemClick(Integer data) {
-////                // Code ấn vào ảnh ở đây
-////            }
-////        });
- //       recyclerView.setAdapter(adapterClass);
+        //Set up layout
         Category_Adapter categoryAdapter = new Category_Adapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
+
         categoryAdapter.setData(DB.getListCategory(main));
         recyclerView.setAdapter(categoryAdapter);
     }
@@ -161,73 +144,6 @@ public class show_all_photo_fragment extends Fragment {
         }
     }
 
-    private void showBigScreen(int position) {
-        // show the selected picture as a single frame in the second layout
-        main.setContentView(R.layout.activity_solo_image);
-        // plumbing – second layout
-        txtSoloMsg = (TextView) main.findViewById(R.id.txtSoloMsg);
-        imgSoloPhoto = (ImageView) main.findViewById(R.id.imgSolo);
-        // set caption-and-large picture
-        txtSoloMsg.setText(" Position= " + position + " " + photoList.get(position).getName());
-        //truyền ảnh vào
-        imgSoloPhoto.setImageResource( photoList.get(position).getLargeImages() );
-        // set GO BACK button to return to layout1 (GridView)
-        btnSoloBack = (Button) main.findViewById(R.id.btnSoloBack);
-        btnDelete= (Button) main.findViewById(R.id.btnSoloDelete);
-        btnShare = (Button) main.findViewById(R.id.btn_share_image);
-        btnSoloBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCreate(myOriginalMemoryBundle);
-            }
-        });
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
-                Bitmap bitmap = bitmapDrawable.getBitmap();
-                shareImageAndText(bitmap);
-            }
-
-        });
-    }
-    private void shareImageAndText(Bitmap bitmap) {
-        Uri uri = getImageToShare(bitmap);
-
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        intent.putExtra(Intent.EXTRA_TEXT, "Image Text");
-        intent.putExtra(Intent.EXTRA_STREAM, "Image Subject");
-
-        intent.setType("image/*");
-
-        startActivity(Intent.createChooser(intent, "Share via"));
-    }
-
-    private Uri getImageToShare(Bitmap bitmap) {
-        File folder = new File(main.getCacheDir(),"images");
-        Uri uri = null;
-
-        try {
-            folder.mkdirs();
-            File file = new File(folder,"image.jpg");
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
-
-            fileOutputStream.flush();
-            fileOutputStream.close();
-
-            uri = FileProvider.getUriForFile(context,"com.example.projectalbum", file);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return uri;
-    }
 }

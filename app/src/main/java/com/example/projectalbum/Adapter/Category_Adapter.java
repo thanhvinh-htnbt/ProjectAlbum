@@ -21,6 +21,8 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
     private Context context;
     private List<Category> listCategory;
 
+
+
     public Category_Adapter(Context context) {
         this.context = context;
     }
@@ -39,20 +41,27 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
+
         Category category = listCategory.get(position);
         if (category == null)
             return;
-
+        //Set ngày tháng
         holder.tvNameCategory.setText(category.getNameCategory());
 
+        //Set up layout
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 4);
         holder.rcvPictures.setLayoutManager(gridLayoutManager);
 
         Photo_Adapter photoAdapter = new Photo_Adapter(context.getApplicationContext(),category.getListPhoto());
-        //photoAdapter.setData(category.getListGirl());
         photoAdapter.setListCategory(listCategory);
         holder.rcvPictures.setAdapter(photoAdapter);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Code ấn vào ảnh ở đây
+            }
+        });
 
     }
 

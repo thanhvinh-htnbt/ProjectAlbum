@@ -1,21 +1,12 @@
 package com.example.projectalbum.Database;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.projectalbum.Model.Album;
 import com.example.projectalbum.Model.Category;
@@ -135,7 +126,7 @@ public class DB {
         dateIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN);
 
         Calendar myCal = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         if (cursor != null){
             while (cursor.moveToNext()){
@@ -145,7 +136,6 @@ public class DB {
 
                 myCal.setTimeInMillis(dateTaken);
                 String dateText = formatter.format(myCal.getTime());
-                Log.d("Check", dateText);
 
                 Photo image = new Photo();
 

@@ -36,7 +36,7 @@ public class SlideShow extends AppCompatActivity {
         imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
         // set caption-and-large picture
         //txtSoloMsg.setText(" Position= "  + " " + photoList.get(1).getName());
-        imgSoloPhoto.setImageResource( photoList.get(1).getLargeImages() );
+        //imgSoloPhoto.setImageResource( photoList.get(1).getLargeImages() );
         // set GO BACK button to return to layout1 (GridView)
         btnBack = (Button) findViewById(R.id.btnBack);
         btnStop=(Button) findViewById(R.id.btnStop);
