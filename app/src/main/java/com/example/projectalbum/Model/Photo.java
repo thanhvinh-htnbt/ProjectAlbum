@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Photo {
+
+    private String dateTaken;
     private int id;
     private String name;
     //danh sách album chứa hình ảnh này
@@ -13,12 +15,18 @@ public class Photo {
 
     private Integer largeImages;
 
-    public Photo(int id, String name,  String filePath, Integer largeImages) {
-        this.id = id;
-        this.name = name;
-//        this.listIDAlbum = listIDAlbum;
+    public Photo(){}
+
+//    public Photo(int id, String name,  String filePath, Integer largeImages) {
+//        this.id = id;
+//        this.name = name;
+////        this.listIDAlbum = listIDAlbum;
+//        this.filePath = filePath;
+//        this.largeImages = largeImages;
+
+
+    public void setFilePath(String filePath) {
         this.filePath = filePath;
-        this.largeImages = largeImages;
     }
 
     public int getId() {
@@ -40,4 +48,13 @@ public class Photo {
     public Integer getLargeImages() {
         return largeImages;
     }
+
+    public String getDateTaken() {
+        return dateTaken;
+    }
+
+    public void setDateTaken(String dateTaken) {
+        this.dateTaken = dateTaken;
+    }
+
 }

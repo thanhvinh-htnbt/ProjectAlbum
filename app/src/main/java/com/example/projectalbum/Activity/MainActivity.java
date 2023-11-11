@@ -2,35 +2,16 @@ package com.example.projectalbum.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.projectalbum.Adapter.MyImageAdapter;
-import com.example.projectalbum.Database.DB;
-import com.example.projectalbum.Fragment.show_all_photo;
-import com.example.projectalbum.Interface.AdapterListener;
-import com.example.projectalbum.Model.Photo;
+import com.example.projectalbum.Fragment.show_all_photo_fragment;
 import com.example.projectalbum.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,10 +34,11 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 switch (itemId){
                     case R.id.nav_photo:
-                        selectedFragment = new show_all_photo();
+                        selectedFragment = new show_all_photo_fragment();
                         break;
                     case R.id.nav_album:
-                        //nothing
+                        Intent intent = new Intent(MainActivity.this, ListAlbumActivity.class);
+                        startActivity(intent);
                         break;
                 }
 
@@ -69,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new show_all_photo()).commit();
+                new show_all_photo_fragment()).commit();
     }
 
 

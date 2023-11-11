@@ -18,10 +18,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.projectalbum.Model.Album;
+import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DB {
@@ -100,14 +103,61 @@ public class DB {
     public static List<Photo> getListPhoto(Context context)
     {
         List<Photo> photoList = new ArrayList<>();
-        List<String> filePathList = DB.getImgpath(context);
+//        List<String> filePathList = DB.getImgpath(context);
+//
+//        for(int i = 0; i < filePathList.size(); i++){
+//            photoList.add(new Photo(i, "photo" + i, filePathList.get(i), R.drawable.lake_1));
+//        }
+////        photoList.add(new Photo(1, "photo1", R.drawable.lake_1, R.drawable.lake_1));
+////        photoList.add(new Photo(2, "photo2", R.drawable.lake_2, R.drawable.lake_2));
+////        photoList.add(new Photo(3, "photo3", R.drawable.lake_3, R.drawable.lake_3));
+        List<String> pathImg = new ArrayList<>();
 
-        for(int i = 0; i < filePathList.size(); i++){
-            photoList.add(new Photo(i, "photo" + i, filePathList.get(i), R.drawable.lake_1));
+        int columnIndexData, thumb, dateIndex;
+
+        String thumbnail = null;
+        Long dateTaken = null;
+        String imagePath = null;
+
+        //Cột của bảng
+        String[] projection = {MediaStore.MediaColumns.DATA,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.DATE_TAKEN
+        };
+
+        String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,projection,
+                null,null,orderBy + " DESC");
+
+        columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        //thumb = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA);
+        dateIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN);
+
+        Calendar myCal = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd-MM-yyyy");
+
+        if (cursor != null){
+            while (cursor.moveToNext()){
+                //thumbnail = cursor.getString(thumb);
+                dateTaken = cursor.getLong(dateIndex);
+                imagePath = cursor.getString(columnIndexData);
+
+                myCal.setTimeInMillis(dateTaken);
+                String dateText = formatter.format(myCal.getTime());
+                Log.d("Check", dateText);
+
+                Photo image = new Photo();
+
+                image.setDateTaken(dateText);
+                image.setFilePath(imagePath);
+
+                photoList.add(image);
+
+            }
+
         }
-//        photoList.add(new Photo(1, "photo1", R.drawable.lake_1, R.drawable.lake_1));
-//        photoList.add(new Photo(2, "photo2", R.drawable.lake_2, R.drawable.lake_2));
-//        photoList.add(new Photo(3, "photo3", R.drawable.lake_3, R.drawable.lake_3));
+        cursor.close();
         return photoList;
     }
     public static List<Photo> getListPhotoOfIdAlbum(int id, Context context)
@@ -155,16 +205,44 @@ public class DB {
 
         List<String> pathImg = new ArrayList<>();
 
-        String[] projection = {MediaStore.MediaColumns.DATA};
+        int columnIndexData, thumb, dateIndex;
 
-        String orderBy = MediaStore.Video.Media.DATE_TAKEN;
+        String thumbnail = null;
+        Long dateTaken = null;
+
+        //Cột của bảng
+        String[] projection = {MediaStore.MediaColumns.DATA,
+                                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                                MediaStore.Images.Media.DATE_TAKEN
+        };
+
+        String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+
         Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,projection,
                 null,null,orderBy + " DESC");
+
+        columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        thumb = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA);
+        dateIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN);
+
+        Calendar myCal = Calendar.getInstance();
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd-MM-yyyy");
+
         if (cursor != null){
             while (cursor.moveToNext()){
+                thumbnail = cursor.getString(thumb);
+                dateTaken = cursor.getLong(dateIndex);
+
+                myCal.setTimeInMillis(dateTaken);
+                String dateText = formatter.format(myCal.getTime());
+                Log.d("Check", dateText);
+
+                Photo image = new Photo();
+
+                image.setDateTaken(dateText);
+
                 @SuppressLint("Range") String imagePath = cursor.getString
                         (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                Log.d("Check", imagePath);
                 pathImg.add(imagePath);
             }
 
@@ -172,6 +250,28 @@ public class DB {
         return pathImg;
     }
 
+    @NonNull
+    public static List<Category> getListCategory(Context context) {
+        List<Category> categoryList = new ArrayList<>();
+        int categoryCount = 0;
+       List<Photo> photoList = getListPhoto(context);
 
+        try {
+            categoryList.add(new Category(photoList.get(0).getDateTaken(), new ArrayList<>()));
+            categoryList.get(categoryCount).addListPhoto(photoList.get(0));
+            for (int i = 1; i  <photoList.size(); i++) {
+                if (!photoList.get(i).getDateTaken().equals(photoList.get(i - 1).getDateTaken())) {
+                    categoryList.add(new Category(photoList.get(i).getDateTaken(), new ArrayList<>()));
+                    categoryCount++;
+                }
+                categoryList.get(categoryCount).addListPhoto(photoList.get(i));
+            }
+            return categoryList;
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+    
 
 }

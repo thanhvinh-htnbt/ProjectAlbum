@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -26,31 +27,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.projectalbum.Activity.ListAlbumActivity;
 import com.example.projectalbum.Activity.MainActivity;
-import com.example.projectalbum.Adapter.MyImageAdapter;
+import com.example.projectalbum.Adapter.Category_Adapter;
+import com.example.projectalbum.Adapter.Photo_Adapter;
 import com.example.projectalbum.Database.DB;
-import com.example.projectalbum.Interface.AdapterListener;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link show_all_photo# newInstance} factory method to
+ * Use the {@link show_all_photo_fragment# newInstance} factory method to
  * create an instance of this fragment.
  */
-public class show_all_photo extends Fragment {
+public class show_all_photo_fragment extends Fragment {
 
     MainActivity main;
     Context context = null;
-    Button btn_album;
-    List<String> imagesPath;
+//    Button btn_album;
+
     LinearLayout  layout_show_all_photo;
     TextView txtSoloMsg;
     ImageView imgSoloPhoto;
@@ -68,7 +67,7 @@ public class show_all_photo extends Fragment {
 
         try {
             context = getActivity();
-           main = (MainActivity) getActivity();
+            main = (MainActivity) getActivity();
         }
         catch (IllegalStateException e) {
             throw new IllegalStateException("MainActivity must implement callbacks");
@@ -109,29 +108,37 @@ public class show_all_photo extends Fragment {
             loadImage(layout_show_all_photo);
         }
 
-        this.btn_album = (Button) layout_show_all_photo.findViewById(R.id.btn_album);
-        this.btn_album.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(main, ListAlbumActivity.class);
-                startActivity(intent);
-            }
-        });
+//        this.btn_album = (Button) layout_show_all_photo.findViewById(R.id.btn_album);
+//        this.btn_album.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(main, ListAlbumActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         return layout_show_all_photo;
     }
     private void loadImage(LinearLayout layout) {
 
-        imagesPath = DB.getImgpath(main);
+
+        List <Photo> imagesPath = DB.getListPhoto(main);
 
         RecyclerView recyclerView = layout.findViewById(R.id.recyclerViewImg);
-        recyclerView.setLayoutManager(new GridLayoutManager(main,3));
-        MyImageAdapter adapterClass = new MyImageAdapter(main, imagesPath, new AdapterListener() {
-            @Override
-            public void onItemClick(Integer data) {
-                // Code ấn vào ảnh ở đây
-            }
-        });
-        recyclerView.setAdapter(adapterClass);
+//        recyclerView.setLayoutManager(new GridLayoutManager(main,3));
+////        Photo_Adapter adapterClass = new Photo_Adapter(main, imagesPath, new AdapterListener() {
+//        Photo_Adapter adapterClass = new Photo_Adapter(main, imagesPath);
+////        {
+////            @Override
+////            public void onItemClick(Integer data) {
+////                // Code ấn vào ảnh ở đây
+////            }
+////        });
+//        recyclerView.setAdapter(adapterClass);
+        Category_Adapter categoryAdapter = new Category_Adapter(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        categoryAdapter.setData(DB.getListCategory(main));
+        recyclerView.setAdapter(categoryAdapter);
     }
 
     @Override
@@ -155,7 +162,7 @@ public class show_all_photo extends Fragment {
 
     private void showBigScreen(int position) {
         // show the selected picture as a single frame in the second layout
-        main.setContentView(R.layout.solo_image_layout);
+        main.setContentView(R.layout.activity_solo_image);
         // plumbing – second layout
         txtSoloMsg = (TextView) main.findViewById(R.id.txtSoloMsg);
         imgSoloPhoto = (ImageView) main.findViewById(R.id.imgSolo);

@@ -1,7 +1,5 @@
 package com.example.projectalbum.Activity;
 
-import static java.lang.Thread.*;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +31,7 @@ public class SlideShow extends AppCompatActivity {
             photoList = DB.getListPhoto(this);
         }
 
-        setContentView(R.layout.slideshow);
+        setContentView(R.layout.activity_slideshow);
         txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
         imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
         // set caption-and-large picture

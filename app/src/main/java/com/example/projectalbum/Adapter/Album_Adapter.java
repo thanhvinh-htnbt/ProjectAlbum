@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectalbum.Interface.AdapterListener;
 import com.example.projectalbum.Model.Album;
 import com.example.projectalbum.R;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.List;
 
