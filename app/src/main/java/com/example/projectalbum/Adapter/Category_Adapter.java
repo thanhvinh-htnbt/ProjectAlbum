@@ -1,6 +1,9 @@
 package com.example.projectalbum.Adapter;
 
+
+
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectalbum.Activity.BigImage;
+import com.example.projectalbum.Activity.SlideShow;
+import com.example.projectalbum.Activity.TestActivity;
 import com.example.projectalbum.Adapter.Photo_Adapter;
 import com.example.projectalbum.Model.Category;
+import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
 
@@ -60,6 +67,17 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
             @Override
             public void onClick(View view) {
                 //Code ấn vào ảnh ở đây
+
+                //Lấy imagePath của ảnh được click trong category
+
+                String imagePath = category.getListPhoto().get(holder.getAdapterPosition()).getfilePath();
+
+                // Truyền vị trí kiểu string qua Intent dưới dạng extra ở intent trước
+                Intent intent = new Intent(context, BigImage.class);
+
+                intent.putExtra("imagePath", imagePath);
+                context.startActivity(intent);
+
             }
         });
 

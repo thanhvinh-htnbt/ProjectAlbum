@@ -60,6 +60,8 @@ public class BigImage extends AppCompatActivity {
         //truyền ảnh vào
         Glide.with(context).load(imagePath).into(imgSoloPhoto);
 
+
+
         btnSoloBack = (Button) findViewById(R.id.btnSoloBack);
         btnDelete= (Button) findViewById(R.id.btnSoloDelete);
         btnShare = (Button) findViewById(R.id.btn_share_image);
