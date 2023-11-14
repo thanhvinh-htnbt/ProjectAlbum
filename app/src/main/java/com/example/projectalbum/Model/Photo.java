@@ -13,7 +13,7 @@ public class Photo {
     //để test sẽ thay đổi sau
     private String filePath;
 
-    private long size;
+    private Long size;
 
 
     public Photo(){}

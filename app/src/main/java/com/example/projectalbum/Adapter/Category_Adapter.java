@@ -71,11 +71,17 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
                 //Lấy imagePath của ảnh được click trong category
 
                 String imagePath = category.getListPhoto().get(holder.getAdapterPosition()).getfilePath();
+                String imageDate = category.getListPhoto().get(holder.getAdapterPosition()).getDateTaken();
+                Long imageSize = category.getListPhoto().get(holder.getAdapterPosition()).getSize();
 
                 // Truyền vị trí kiểu string qua Intent dưới dạng extra ở intent trước
                 Intent intent = new Intent(context, BigImage.class);
 
                 intent.putExtra("imagePath", imagePath);
+                //intent.putExtra("imageDate", imageDate);
+                //intent.putExtra("imageSize", imageSize);
+
+
                 context.startActivity(intent);
 
             }

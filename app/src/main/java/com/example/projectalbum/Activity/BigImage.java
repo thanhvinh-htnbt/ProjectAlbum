@@ -4,6 +4,8 @@ import static com.example.projectalbum.Database.DB.getListPhoto;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
+import com.example.projectalbum.Fragment.DetailFragment;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
@@ -30,7 +33,7 @@ public class BigImage extends AppCompatActivity {
     Context context = null;
     TextView txtSoloMsg;
     ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare;
+    Button btnSoloBack, btnDelete, btnShare, btnDetail;
     List<Photo> photoList = new ArrayList<>();
     Bundle myOriginalMemoryBundle;
     @Override
@@ -45,16 +48,11 @@ public class BigImage extends AppCompatActivity {
         txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
         imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
 
-
-
-        // Truyền vị trí kiểu string qua Intent dưới dạng extra ở intent trước
-        //Nếu cần thêm data gì thì thêm vào intent
-        //intent.putExtra("imagePath", data);
-
-
-
         // Nhận giá trị kiểu string từ Intent trước
         String imagePath = getIntent().getStringExtra("imagePath");
+        String imageDate = getIntent().getStringExtra("imageDate");
+        Long imageSize = getIntent().getLongExtra("imageSize",0);
+
         // set caption-and-large picture
         txtSoloMsg.setText(" Position= " + 1);
         //truyền ảnh vào
@@ -65,6 +63,8 @@ public class BigImage extends AppCompatActivity {
         btnSoloBack = (Button) findViewById(R.id.btnSoloBack);
         btnDelete= (Button) findViewById(R.id.btnSoloDelete);
         btnShare = (Button) findViewById(R.id.btn_share_image);
+        btnDetail=(Button)findViewById(R.id.btn_detail);
+
         btnSoloBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +88,26 @@ public class BigImage extends AppCompatActivity {
                 shareImageAndText(bitmap);
             }
 
+        });
+        btnDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Tạo và hiển thị Fragment
+                DetailFragment fragment = new DetailFragment();
+
+                Bundle data=new Bundle();
+                data.putLong("imageSize",imageSize);
+                data.putString("imageDate",imageDate);
+                data.putString("imagePath",imagePath);
+                fragment.setArguments(data);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.fragmentDetail, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
         });
     }
 

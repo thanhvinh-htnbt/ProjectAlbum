@@ -52,6 +52,8 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String imagePath = photoList.get(position).getfilePath();
+        String imageDate = photoList.get(position).getDateTaken();
+        Long imageSize = photoList.get(position).getSize();
 
         //truyền ảnh vào ImageView
         Glide.with(context).load(imagePath).into(holder.imageView);
@@ -62,6 +64,9 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
                 if(context !=null) {
                     Intent intent = new Intent(context, BigImage.class);
                     intent.putExtra("imagePath", imagePath);
+                    intent.putExtra("imageDate", imageDate);
+                    intent.putExtra("imageSize", imageSize);
+
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }

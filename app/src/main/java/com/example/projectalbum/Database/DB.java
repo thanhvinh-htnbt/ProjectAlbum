@@ -13,6 +13,7 @@ import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -109,6 +110,7 @@ public class DB {
         String thumbnail = null;
         Long dateTaken = null;
         String imagePath = null;
+        Long size;
 
         //Cột của bảng
         String[] projection = {MediaStore.MediaColumns.DATA,
@@ -137,10 +139,14 @@ public class DB {
                 myCal.setTimeInMillis(dateTaken);
                 String dateText = formatter.format(myCal.getTime());
 
+                File f=new File(imagePath);
+                size=f.length();
+
                 Photo image = new Photo();
 
                 image.setDateTaken(dateText);
                 image.setFilePath(imagePath);
+                image.setSize(size);
 
                 photoList.add(image);
 
