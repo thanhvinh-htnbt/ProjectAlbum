@@ -13,6 +13,8 @@ public class Photo {
     //để test sẽ thay đổi sau
     private String filePath;
 
+    private long size;
+
 
     public Photo(){}
 
@@ -54,6 +56,14 @@ public class Photo {
 
     public void setDateTaken(String dateTaken) {
         this.dateTaken = dateTaken;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
     }
 
 }
