@@ -2,19 +2,24 @@ package com.example.projectalbum.Activity;
 
 import static com.example.projectalbum.Database.DB.getListPhoto;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,9 +36,10 @@ import java.util.List;
 
 public class BigImage extends AppCompatActivity {
     Context context = null;
-    TextView txtSoloMsg;
+    TextView txtSoloMsg, tv_Description;
+    EditText et_Description;
     ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare, btnDetail;
+    Button btnSoloBack, btnDelete, btnShare, btnDetail,btnAddDescription;
     List<Photo> photoList = new ArrayList<>();
     Bundle myOriginalMemoryBundle;
     @Override
@@ -47,14 +53,18 @@ public class BigImage extends AppCompatActivity {
         photoList=getListPhoto(context);
         txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
         imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
+        tv_Description=(TextView) findViewById(R.id.tv_Description);
+        et_Description=(EditText)findViewById(R.id.et_Description);
 
         // Nhận giá trị kiểu string từ Intent trước
         String imagePath = getIntent().getStringExtra("imagePath");
         String imageDate = getIntent().getStringExtra("imageDate");
         Long imageSize = getIntent().getLongExtra("imageSize",0);
+        final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
 
         // set caption-and-large picture
         txtSoloMsg.setText(" Position= " + 1);
+        tv_Description.setText(imageDescription[0]);
         //truyền ảnh vào
         Glide.with(context).load(imagePath).into(imgSoloPhoto);
 
@@ -64,6 +74,7 @@ public class BigImage extends AppCompatActivity {
         btnDelete= (Button) findViewById(R.id.btnSoloDelete);
         btnShare = (Button) findViewById(R.id.btn_share_image);
         btnDetail=(Button)findViewById(R.id.btn_detail);
+        btnAddDescription=(Button)findViewById(R.id.btn_Add_Description);
 
         btnSoloBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +104,23 @@ public class BigImage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Tạo và hiển thị Fragment
-                DetailFragment fragment = new DetailFragment();
+                //DetailFragment fragment = new DetailFragment();
+                AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImage.this);
+
+                detailDialog.setTitle("Chi tiết");
+                detailDialog.setMessage("Dung lượng: "+imageSize);
+                detailDialog.setMessage("Ngày tạo: "+imageDate);
+                detailDialog.setMessage("Đường dẫn: "+imagePath);
+
+                detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                detailDialog.create().show();
+
+                /*
 
                 Bundle data=new Bundle();
                 data.putLong("imageSize",imageSize);
@@ -106,6 +133,33 @@ public class BigImage extends AppCompatActivity {
                 fragmentTransaction.add(R.id.fragmentDetail, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+                 */
+
+            }
+        });
+        btnAddDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String add=et_Description.getText().toString();
+
+                if(imageDescription[0] !=null)
+                {
+                    imageDescription[0] = imageDescription[0] + add;
+                }
+                else imageDescription[0] = add;
+
+
+
+                tv_Description.setText(imageDescription[0]);
+                et_Description.setText("");
+                /*
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DESCRIPTION,imageDescription[0]);
+                Uri imageUri = Uri.parse(imagePath);
+                int rowsUpdated = getContentResolver().update(imageUri, values, null, null);
+
+                 */
 
             }
         });
