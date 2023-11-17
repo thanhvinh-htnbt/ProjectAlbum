@@ -15,6 +15,8 @@ public class Photo {
 
     private Long size;
 
+    private String Description;
+
 
     public Photo(){}
 
@@ -58,12 +60,21 @@ public class Photo {
         this.dateTaken = dateTaken;
     }
 
-    public long getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(long size) {
+    public void setSize(Long size) {
         this.size = size;
+    }
+
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String Description) {
+        this.Description = Description;
     }
 
 }

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,9 @@ public class SlideShow extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context =this;
+
+        //AlertDialog.Builder preSlideShow=new AlertDialog.Builder(SlideShow.this);
+
 
         photoList=getListPhoto(context);
 

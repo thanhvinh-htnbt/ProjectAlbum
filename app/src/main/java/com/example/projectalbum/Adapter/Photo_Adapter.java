@@ -54,6 +54,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
         String imagePath = photoList.get(position).getfilePath();
         String imageDate = photoList.get(position).getDateTaken();
         Long imageSize = photoList.get(position).getSize();
+        String imageDescription=photoList.get(position).getDescription();
 
         //truyền ảnh vào ImageView
         Glide.with(context).load(imagePath).into(holder.imageView);
@@ -66,6 +67,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
                     intent.putExtra("imagePath", imagePath);
                     intent.putExtra("imageDate", imageDate);
                     intent.putExtra("imageSize", imageSize);
+                    intent.putExtra("imageDescription", imageDescription);
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

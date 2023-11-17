@@ -105,18 +105,22 @@ public class DB {
 ////        photoList.add(new Photo(3, "photo3", R.drawable.lake_3, R.drawable.lake_3));
         List<String> pathImg = new ArrayList<>();
 
-        int columnIndexData, thumb, dateIndex;
+        int columnIndexData, thumb, dateIndex, descriptionIndex;
 
         String thumbnail = null;
         Long dateTaken = null;
         String imagePath = null;
         Long size;
+        String description="";
 
         //Cột của bảng
         String[] projection = {MediaStore.MediaColumns.DATA,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.Media.DATE_TAKEN
+                MediaStore.Images.Media.DATE_TAKEN,
+                MediaStore.Images.Media.DESCRIPTION
         };
+
+
 
         String orderBy = MediaStore.Images.Media.DATE_TAKEN;
 
@@ -126,6 +130,10 @@ public class DB {
         columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         //thumb = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA);
         dateIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN);
+
+        descriptionIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DESCRIPTION);
+
+
 
         Calendar myCal = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -142,11 +150,15 @@ public class DB {
                 File f=new File(imagePath);
                 size=f.length();
 
+                description=cursor.getString(descriptionIndex);
+
                 Photo image = new Photo();
 
                 image.setDateTaken(dateText);
                 image.setFilePath(imagePath);
                 image.setSize(size);
+                image.setDescription(description);
+
 
                 photoList.add(image);
 
