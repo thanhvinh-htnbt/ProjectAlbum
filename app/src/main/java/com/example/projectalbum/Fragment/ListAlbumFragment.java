@@ -1,66 +1,92 @@
-package com.example.projectalbum.Activity;
+package com.example.projectalbum.Fragment;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.projectalbum.Activity.ListAlbumActivity;
+import com.example.projectalbum.Activity.MainActivity;
+import com.example.projectalbum.Activity.PhotoAlbumActivity;
 import com.example.projectalbum.Adapter.Album_Adapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Interface.AdapterListener;
+import com.example.projectalbum.Interface.MainActivityListener;
 import com.example.projectalbum.Model.Album;
 import com.example.projectalbum.R;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ListAlbumActivity extends AppCompatActivity  implements AdapterListener, PopupMenu.OnMenuItemClickListener {
+public class ListAlbumFragment extends Fragment implements AdapterListener, PopupMenu.OnMenuItemClickListener {
     private RecyclerView rcv_list_album;
     private ImageButton imgb_menu;
     private boolean isShowCheck = false;
     Album_Adapter albumAdapter;
     private List<Album> listAlbum;
+    private Context context;
+    private MainActivityListener listener;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
-
-    //    private ImageButton imgb_popup;
-//    @SuppressLint("MissingInflatedId")
+    public ListAlbumFragment(Context context)
+    {
+        this.context = context;
+    }
+    public void setListener(MainActivityListener listener) {
+        this.listener = listener;
+    }
+    public static ListAlbumFragment newInstance(Context context) {
+        ListAlbumFragment fragment = new ListAlbumFragment(context);
+//        setListener((MainActivityListener) context);
+        fragment.setListener((MainActivityListener) context);
+        fragment.context = context;
+        return fragment;
+    }
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_album);
-        albumAdapter = new Album_Adapter(this);
-        recyclerViewAlbum();
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_list_album, container, false);
 
-        this.imgb_menu = (ImageButton) findViewById(R.id.popup_menu);
+        albumAdapter = new Album_Adapter(this.context);
+        recyclerViewAlbum(view);
+
+        this.imgb_menu = (ImageButton) view.findViewById(R.id.popup_menu);
         this.imgb_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopup(view);
             }
         });
-    }
+        this.onPress();
 
-    private void recyclerViewAlbum() {
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
-        this.rcv_list_album = (RecyclerView) findViewById(R.id.rcv_list_album);
+        return view;
+    }
+    private void recyclerViewAlbum(View view) {
+        GridLayoutManager layoutManager = new GridLayoutManager(this.context, 3);
+        this.rcv_list_album = (RecyclerView) view.findViewById(R.id.rcv_list_album);
         this.rcv_list_album.setLayoutManager(layoutManager);
 
         albumAdapter.setListener(this);
@@ -71,39 +97,58 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
     }
 
     private List<Album> loadAlbum() {
-        List<Album> albumList = DB.getAlbums(this);
+        List<Album> albumList = DB.getAlbums(this.context);
 
         return albumList;
     }
 
-    @Override
-    public void onItemClick(String name, String id) {
-        Toast.makeText(this, "id=" + id.toString(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(ListAlbumActivity.this, PhotoAlbumActivity.class);
-        intent.putExtra("ID", id);
-        intent.putExtra("NAME", name);
-        startActivity(intent);
+
+//    @Override
+//    public void onBackPressed() {
+//        if (isShowCheck) {
+//            // Thoát khỏi trạng thái dấu tích
+//            isShowCheck = false;
+//            for (Album album : listAlbum) {
+//                album.IsSelected = false;
+//                this.albumAdapter.setIsShowCheck(false);
+//            }
+//            // Cập nhật giao diện
+//            albumAdapter.notifyDataSetChanged();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
+    private void onPress()
+    {
+        // Thiết lập hành động cho nút Back
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Thực hiện hành động của bạn tại đây
+                if (isShowCheck) {
+                    // Thoát khỏi trạng thái dấu tích
+                    isShowCheck = false;
+                    for (Album album : listAlbum) {
+                        album.IsSelected = false;
+                        albumAdapter.setIsShowCheck(false);
+                    }
+                    // Cập nhật giao diện
+                    albumAdapter.notifyDataSetChanged();
+                } else {
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        });
     }
 
     @Override
-    public void onBackPressed() {
-        if (isShowCheck) {
-            // Thoát khỏi trạng thái dấu tích
-            isShowCheck = false;
-            for (Album album : listAlbum) {
-                album.IsSelected = false;
-                this.albumAdapter.setIsShowCheck(false);
-            }
-            // Cập nhật giao diện
-            albumAdapter.notifyDataSetChanged();
-        } else {
-            super.onBackPressed();
-        }
+    public void onItemClick(String name, String id) {
+        this.listener.onItemAlbumClick(name, id);
     }
 
     @Override
     public void onItemShowActionSelected(boolean isSelected) {
-
         if (isSelected) {
             this.isShowCheck = true;
         } else {
@@ -119,12 +164,11 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
     }
 
     public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
+        PopupMenu popup = new PopupMenu(this.context, v);
         popup.setOnMenuItemClickListener(this);
         popup.inflate(R.menu.menu_album);
         popup.show();
     }
-
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -139,10 +183,10 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
 
     private void showInputCreateNewAlbum() {
         //yêu ầu quyền ghi
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Quyền chưa được cấp, yêu cầu quyền.
-            ActivityCompat.requestPermissions(this,
+            ActivityCompat.requestPermissions((Activity) this.context,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
         } else {
@@ -163,7 +207,7 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
                     showCreateAlbumDialog();
                 } else {
                     // Quyền đã bị từ chối. Hiển thị thông báo không có quyền tạo album mới.
-                    Toast.makeText(getApplicationContext(), "Không có quyền tạo album mới", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this.context, "Không có quyền tạo album mới", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -175,13 +219,13 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
     private void showCreateAlbumDialog() {
         // Hiển thị dialog hoặc EditText để người dùng nhập tên album mới.
         // Tạo một AlertDialog.Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
 
         // Đặt tiêu đề cho AlertDialog
         builder.setTitle("Nhập tên Album mới");
 
         // Tạo một EditText
-        final EditText input = new EditText(this);
+        final EditText input = new EditText(this.context);
 
         // Đặt EditText vào AlertDialog
         builder.setView(input);
@@ -191,7 +235,7 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String name = input.getText().toString();
-                createNewAlbum(name);
+                DB.createNewAlbum(context,name);
                 // Xử lý tạo album với tên đã nhập ở đây
                 Album newAlbum = new Album("1", name, 0, "");
                 listAlbum.add(newAlbum);
@@ -210,18 +254,5 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
         // Hiển thị AlertDialog
         builder.show();
     }
-    public void createNewAlbum(String albumName) {
-        File picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File album = new File(picturesDir, albumName);
-        if (!album.exists()) {
-            boolean success = album.mkdirs();
-            if (success) {
-                Toast.makeText(getApplicationContext(), "Album created", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Failed to create album", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Album already exists", Toast.LENGTH_SHORT).show();
-        }
-    }
+
 }

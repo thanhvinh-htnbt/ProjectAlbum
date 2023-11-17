@@ -6,17 +6,27 @@
     android:background="@drawable/custom_item_album">
 
     <LinearLayout
+        android:id="@+id/cv_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/custom_item_album">
+        android:background="@drawable/custom_item_album"
+        >
+
+        <ImageView
+            android:id="@+id/img_check"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="end"
+            android:translationZ="1dp"/>
 
         <ImageView
             android:id="@+id/imgv_album"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:src="@drawable/ic_launcher_foreground"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:layout_weight="9"/>
 
         <TextView

@@ -20,6 +20,9 @@
         android:theme="@style/Theme.ProjectAlbum"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.PhotoAlbumActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.BigImage"
             android:exported="false" />
         <activity

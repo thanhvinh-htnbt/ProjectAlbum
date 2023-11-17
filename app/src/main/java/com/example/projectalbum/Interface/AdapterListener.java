@@ -1,5 +1,9 @@
 package com.example.projectalbum.Interface;
 
 public interface AdapterListener {
-    void onItemClick(Integer data);
+    void onItemClick(String name, String id);
+
+    void onItemShowActionSelected(boolean isSelected);
+
+    void onExitShowActionSelected();
 }
