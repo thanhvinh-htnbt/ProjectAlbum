@@ -8,6 +8,8 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,7 +41,7 @@ public class BigImage extends AppCompatActivity {
     TextView txtSoloMsg, tv_Description;
     EditText et_Description;
     ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare, btnDetail,btnAddDescription;
+    Button btnSoloBack, btnDelete, btnShare, btnDetail,btnAddDescription,btnEdit;
     List<Photo> photoList = new ArrayList<>();
     Bundle myOriginalMemoryBundle;
     @Override
@@ -74,6 +76,8 @@ public class BigImage extends AppCompatActivity {
         btnDelete= (Button) findViewById(R.id.btnSoloDelete);
         btnShare = (Button) findViewById(R.id.btn_share_image);
         btnDetail=(Button)findViewById(R.id.btn_detail);
+        btnEdit=(Button)findViewById(R.id.btn_edit);
+
         btnAddDescription=(Button)findViewById(R.id.btn_Add_Description);
 
         btnSoloBack.setOnClickListener(new View.OnClickListener() {
@@ -104,13 +108,24 @@ public class BigImage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Tạo và hiển thị Fragment
-                //DetailFragment fragment = new DetailFragment();
                 AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImage.this);
 
                 detailDialog.setTitle("Chi tiết");
-                detailDialog.setMessage("Dung lượng: "+imageSize);
-                detailDialog.setMessage("Ngày tạo: "+imageDate);
-                detailDialog.setMessage("Đường dẫn: "+imagePath);
+                String sizeunit=" bytes";
+                Long size=imageSize;
+                if(size>1024)
+                {
+                    size=size/1024;
+                    sizeunit=" KB";
+                }
+                if(size>1024)
+                {
+                    size=size/1024;
+                    sizeunit=" MB";
+
+                }
+                detailDialog.setMessage("Dung lượng: "+size + sizeunit+"\n"+"Ngày tạo: "+imageDate+"\n"+"Đường dẫn: "+imagePath);
+
 
                 detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
                     @Override
@@ -120,21 +135,7 @@ public class BigImage extends AppCompatActivity {
                 });
                 detailDialog.create().show();
 
-                /*
 
-                Bundle data=new Bundle();
-                data.putLong("imageSize",imageSize);
-                data.putString("imageDate",imageDate);
-                data.putString("imagePath",imagePath);
-                fragment.setArguments(data);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.fragmentDetail, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
-                 */
 
             }
         });
@@ -153,13 +154,7 @@ public class BigImage extends AppCompatActivity {
 
                 tv_Description.setText(imageDescription[0]);
                 et_Description.setText("");
-                /*
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DESCRIPTION,imageDescription[0]);
-                Uri imageUri = Uri.parse(imagePath);
-                int rowsUpdated = getContentResolver().update(imageUri, values, null, null);
 
-                 */
 
             }
         });
