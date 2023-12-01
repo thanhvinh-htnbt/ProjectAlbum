@@ -42,12 +42,14 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("com.google.android.material:material:1.2.0")
+
 
     implementation ("com.squareup.picasso:picasso:2.71828")
-    implementation(files("libs/ds-photo-editor-sdk.jar"))
+    //implementation(files("libs/ds-photo-editor-sdk.jar"))
 
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
-    implementation("com.dsphotoeditor:ds-photo-editor-sdk:10")
+    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+    //implementation("com.dsphotoeditor:ds-photo-editor-sdk:10")
     implementation ("com.github.bumptech.glide:glide:4.14.2")
 
 }

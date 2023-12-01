@@ -2,15 +2,13 @@ package com.example.projectalbum.Activity;
 
 import static com.example.projectalbum.Database.DB.getListPhoto;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,8 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,21 +24,28 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
-import com.example.projectalbum.Fragment.DetailFragment;
+import com.example.projectalbum.Fragment.DescriptionFragment;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 public class BigImage extends AppCompatActivity {
     Context context = null;
-    TextView txtSoloMsg, tv_Description;
+    TextView txtSoloMsg;
     EditText et_Description;
     ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare, btnDetail,btnAddDescription,btnEdit;
+
+    DescriptionFragment descriptionFragment;
+
     List<Photo> photoList = new ArrayList<>();
     Bundle myOriginalMemoryBundle;
     @Override
@@ -55,8 +59,7 @@ public class BigImage extends AppCompatActivity {
         photoList=getListPhoto(context);
         txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
         imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
-        tv_Description=(TextView) findViewById(R.id.tv_Description);
-        et_Description=(EditText)findViewById(R.id.et_Description);
+
 
         // Nhận giá trị kiểu string từ Intent trước
         String imagePath = getIntent().getStringExtra("imagePath");
@@ -64,100 +67,71 @@ public class BigImage extends AppCompatActivity {
         Long imageSize = getIntent().getLongExtra("imageSize",0);
         final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
 
-        // set caption-and-large picture
-        txtSoloMsg.setText(" Position= " + 1);
-        tv_Description.setText(imageDescription[0]);
+
         //truyền ảnh vào
         Glide.with(context).load(imagePath).into(imgSoloPhoto);
 
 
+        AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImage.this);
 
-        btnSoloBack = (Button) findViewById(R.id.btnSoloBack);
-        btnDelete= (Button) findViewById(R.id.btnSoloDelete);
-        btnShare = (Button) findViewById(R.id.btn_share_image);
-        btnDetail=(Button)findViewById(R.id.btn_detail);
-        btnEdit=(Button)findViewById(R.id.btn_edit);
+        Bundle des=new Bundle();
+        des.putString("description",imageDescription[0]);
 
-        btnAddDescription=(Button)findViewById(R.id.btn_Add_Description);
 
-        btnSoloBack.setOnClickListener(new View.OnClickListener() {
+        BottomNavigationView navigation_picture=(BottomNavigationView)findViewById(R.id.bottomPictureNavigationView);
+        navigation_picture.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                //quay trở lại intent trước
-                finish();
-            }
-        });
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.share_pic:
+                        //Lấy ảnh để share
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        shareImageAndText(bitmap);
+                        return true;
+                    case R.id.detail_pic:_pic:
 
-            }
-        });
+                        detailDialog.setTitle("Chi tiết");
+                        String sizeunit=" bytes";
+                        Long size=imageSize;
+                        if(size>1024)
+                        {
+                            size=size/1024;
+                            sizeunit=" KB";
+                        }
+                        if(size>1024)
+                        {
+                            size=size/1024;
+                            sizeunit=" MB";
+                        }
+                        detailDialog.setMessage("Dung lượng: "+size + sizeunit+"\n"+"Ngày tạo: "+imageDate+"\n"+"Đường dẫn: "+imagePath);
+                        detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        detailDialog.create().show();
+                        return true;
+                    case R.id.delete_pic:
+                        return true;
 
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Lấy ảnh để share
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
-                Bitmap bitmap = bitmapDrawable.getBitmap();
-                shareImageAndText(bitmap);
-            }
+                    case R.id.edit_pic:
+                        return true;
 
-        });
-        btnDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Tạo và hiển thị Fragment
-                AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImage.this);
+                    case R.id.description_pic:_pic:
 
-                detailDialog.setTitle("Chi tiết");
-                String sizeunit=" bytes";
-                Long size=imageSize;
-                if(size>1024)
-                {
-                    size=size/1024;
-                    sizeunit=" KB";
-                }
-                if(size>1024)
-                {
-                    size=size/1024;
-                    sizeunit=" MB";
+                        descriptionFragment=new DescriptionFragment();
+                        descriptionFragment.setArguments(des);
+                        descriptionFragment.show(getSupportFragmentManager(), "dialog");
 
-                }
-                detailDialog.setMessage("Dung lượng: "+size + sizeunit+"\n"+"Ngày tạo: "+imageDate+"\n"+"Đường dẫn: "+imagePath);
-
-
-                detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                detailDialog.create().show();
-
-
+                        return true;
 
             }
+                return false;
+        }
         });
-        btnAddDescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String add=et_Description.getText().toString();
 
-                if(imageDescription[0] !=null)
-                {
-                    imageDescription[0] = imageDescription[0] + add;
-                }
-                else imageDescription[0] = add;
-
-
-
-                tv_Description.setText(imageDescription[0]);
-                et_Description.setText("");
-
-
-            }
-        });
     }
 
     //Share dữ liệu
