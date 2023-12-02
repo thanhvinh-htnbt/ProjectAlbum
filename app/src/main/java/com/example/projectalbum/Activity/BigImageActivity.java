@@ -4,6 +4,7 @@ import static com.example.projectalbum.Database.DB.getListPhoto;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -67,7 +68,11 @@ public class BigImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solo_image);
 
-        //context để lấy ảnh
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         context =this;
 
         photoList=getListPhoto(context);
@@ -172,9 +177,6 @@ public class BigImageActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-
 
     }
 

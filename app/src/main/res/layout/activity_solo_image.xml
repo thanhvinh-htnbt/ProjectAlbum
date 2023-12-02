@@ -5,9 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="3dp">
-    <TextView android:id="@+id/txtSoloMsg"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar">
+
+    </include>
+
     <ImageView android:id="@+id/imgSolo"
         android:layout_width="match_parent"
         android:layout_height="0dip"
@@ -22,7 +26,8 @@
         app:itemIconTint="@color/main_color"
         app:labelVisibilityMode="unlabeled"
         android:background="?android:attr/windowBackground"
-
         app:menu="@menu/bottom_picture_nav_menu"/>
+
+
 
 </LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">@color/white</item> <!-- Nền màu trắng -->
+        <item name="colorPrimary">@color/orange</item> <!-- Màu cam -->
+        <item name="android:textColorPrimary">@color/orange</item>
+    </style>
+
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/white</item> <!-- Nền màu trắng -->
+        <item name="navigationIconTint">@color/orange</item> <!-- Màu cam cho nút mũi tên trở lại -->
+    </style>
+</resources>
