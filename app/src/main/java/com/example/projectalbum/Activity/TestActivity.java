@@ -41,7 +41,7 @@ public class TestActivity extends AppCompatActivity {
         btn_slideshow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TestActivity.this, SlideShow.class);
+                Intent intent = new Intent(TestActivity.this, SlideShowActivity.class);
                 startActivity(intent);
             }
         });

@@ -26,19 +26,19 @@ import com.example.projectalbum.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class all_photo_album_fragment extends Fragment {
+public class AllPhotoAlbumFragment extends Fragment {
     List<Photo> photoList = new ArrayList<>();
     private static final String ID = "id";
     private String id = "";
     private Context context;
     LinearLayout  layout_show_all_photo;
 
-    public all_photo_album_fragment() {
+    public AllPhotoAlbumFragment() {
         // Required empty public constructor
     }
 
-    public static all_photo_album_fragment newInstance(Context context, String id) {
-        all_photo_album_fragment fragment = new all_photo_album_fragment();
+    public static AllPhotoAlbumFragment newInstance(Context context, String id) {
+        AllPhotoAlbumFragment fragment = new AllPhotoAlbumFragment();
         fragment.context = context;
         Bundle args = new Bundle();
         args.putString(ID, id);
@@ -72,7 +72,7 @@ public class all_photo_album_fragment extends Fragment {
         }
 
 
-        // Inflate the layout for this fragment
+        // layout chính
         return layout_show_all_photo;
     }
 

@@ -1,7 +1,6 @@
 package com.example.projectalbum.Adapter;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.projectalbum.Activity.BigImage;
+import com.example.projectalbum.Activity.BigImageActivity;
 import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
@@ -63,7 +62,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
             @Override
             public void onClick(View view) {
                 if(context !=null) {
-                    Intent intent = new Intent(context, BigImage.class);
+                    Intent intent = new Intent(context, BigImageActivity.class);
                     intent.putExtra("imagePath", imagePath);
                     intent.putExtra("imageDate", imageDate);
                     intent.putExtra("imageSize", imageSize);

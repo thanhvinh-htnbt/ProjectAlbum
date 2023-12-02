@@ -23,13 +23,13 @@
             android:name=".Activity.PhotoAlbumActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.BigImage"
+            android:name=".Activity.BigImageActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.ListAlbumActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.SlideShow"
+            android:name=".Activity.SlideShowActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"

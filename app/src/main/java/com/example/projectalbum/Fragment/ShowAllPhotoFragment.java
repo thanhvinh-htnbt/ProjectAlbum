@@ -2,19 +2,13 @@ package com.example.projectalbum.Fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,22 +23,19 @@ import android.widget.Toast;
 
 import com.example.projectalbum.Activity.MainActivity;
 import com.example.projectalbum.Adapter.Category_Adapter;
-import com.example.projectalbum.Adapter.Photo_Adapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link show_all_photo_fragment# newInstance} factory method to
+ * Use the {@link ShowAllPhotoFragment# newInstance} factory method to
  * create an instance of this fragment.
  */
-public class show_all_photo_fragment extends Fragment {
+public class ShowAllPhotoFragment extends Fragment {
 
     MainActivity main;
     Context context = null;

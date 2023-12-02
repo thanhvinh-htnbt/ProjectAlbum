@@ -13,12 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.projectalbum.Activity.BigImage;
-import com.example.projectalbum.Activity.SlideShow;
-import com.example.projectalbum.Activity.TestActivity;
-import com.example.projectalbum.Adapter.Photo_Adapter;
+import com.example.projectalbum.Activity.BigImageActivity;
 import com.example.projectalbum.Model.Category;
-import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
 
@@ -77,7 +73,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
 
 
                 // Truyền vị trí kiểu string qua Intent dưới dạng extra ở intent trước
-                Intent intent = new Intent(context, BigImage.class);
+                Intent intent = new Intent(context, BigImageActivity.class);
 
                 intent.putExtra("imagePath", imagePath);
                 intent.putExtra("imageDate", imageDate);

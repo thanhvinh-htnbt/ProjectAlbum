@@ -10,18 +10,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlideShow extends AppCompatActivity {
+public class SlideShowActivity extends AppCompatActivity {
     Context context = null;
     Button btnBack,btnStop,btnContinue;
     List<Photo> photoList = new ArrayList<>();
