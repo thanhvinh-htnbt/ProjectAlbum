@@ -46,10 +46,11 @@ dependencies {
 
 
     implementation ("com.squareup.picasso:picasso:2.71828")
-    //implementation(files("libs/ds-photo-editor-sdk.jar"))
+    implementation (files("libs/ds-photo-editor-sdk.aar"))
 
-    //implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
-    //implementation("com.dsphotoeditor:ds-photo-editor-sdk:10")
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
+    implementation("com.dsphotoeditor:ds-photo-editor-sdk:10")
     implementation ("com.github.bumptech.glide:glide:4.14.2")
+    implementation ("com.dsphotoeditor:dsphotoeditor:1.0.0")
 
 }

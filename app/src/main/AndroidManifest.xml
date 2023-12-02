@@ -45,7 +45,7 @@
             </intent-filter>
 
         </activity>
-        <!--
+
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"/>
         <activity
@@ -65,7 +65,7 @@
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorDrawActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
-            -->
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
