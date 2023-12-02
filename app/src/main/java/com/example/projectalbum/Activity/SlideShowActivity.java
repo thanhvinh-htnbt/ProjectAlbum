@@ -21,7 +21,7 @@ import com.example.projectalbum.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SlideShow extends AppCompatActivity {
+public class SlideShowActivity extends AppCompatActivity {
     Context context = null;
     Button btnBack,btnStop,btnContinue;
     List<Photo> photoList = new ArrayList<>();

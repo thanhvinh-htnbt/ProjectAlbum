@@ -27,6 +27,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,8 +38,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.projectalbum.Database.DB;
+import com.example.projectalbum.Fragment.DescriptionFragment;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,12 +50,13 @@ import java.util.List;
 
 public class BigImageActivity extends AppCompatActivity {
     Context context = null;
-    TextView txtSoloMsg, tv_Description;
-    EditText et_Description;
+
     ImageView imgSoloPhoto;
     Button btnSoloBack, btnDelete, btnShare, btnDetail,btnAddDescription;
     List<Photo> photoList = new ArrayList<>();
     Bundle myOriginalMemoryBundle;
+
+    DescriptionFragment descriptionFragment;
 
     String imagePath;
     String imageDate;
@@ -67,10 +71,7 @@ public class BigImageActivity extends AppCompatActivity {
         context =this;
 
         photoList=getListPhoto(context);
-        txtSoloMsg = (TextView) findViewById(R.id.txtSoloMsg);
         imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
-        tv_Description=(TextView) findViewById(R.id.tv_Description);
-        et_Description=(EditText)findViewById(R.id.et_Description);
 
         // Nhận giá trị kiểu string từ Intent trước
         imagePath = getIntent().getStringExtra("imagePath");
@@ -79,142 +80,99 @@ public class BigImageActivity extends AppCompatActivity {
         final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
 
         // set caption-and-large picture
-        txtSoloMsg.setText(" Position= " + 1);
-        tv_Description.setText(imageDescription[0]);
         //truyền ảnh vào
         Glide.with(context).load(imagePath).into(imgSoloPhoto);
 
+        AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImageActivity.this);
+        Bundle des=new Bundle();
+        des.putString("description",imageDescription[0]);
 
 
-        btnSoloBack = (Button) findViewById(R.id.btnSoloBack);
-        btnDelete= (Button) findViewById(R.id.btnSoloDelete);
-        btnShare = (Button) findViewById(R.id.btn_share_image);
-        btnDetail=(Button)findViewById(R.id.btn_detail);
-        btnAddDescription=(Button)findViewById(R.id.btn_Add_Description);
-
-        btnSoloBack.setOnClickListener(new View.OnClickListener() {
+        BottomNavigationView navigation_picture=(BottomNavigationView)findViewById(R.id.bottomPictureNavigationView);
+        navigation_picture.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                //quay trở lại intent trước
-                finish();
-            }
-        });
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(BigImageActivity.this);
-                Uri targetUri = Uri.parse(imagePath);
-                builder.setTitle("Confirm");
-                builder.setMessage("Do you want to delete this image?");
-
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        if (ContextCompat.checkSelfPermission(context,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                ActivityCompat.requestPermissions((Activity) context,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST);
-                        } else {
-                            // Nếu đã có quyền, thực hiện xóa ảnh
-                            deleteImage(imagePath);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.share_pic:
+                        //Lấy ảnh để share
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        shareImageAndText(bitmap);
+                        return true;
+                    case R.id.detail_pic:_pic:
+                        detailDialog.setTitle("Chi tiết");
+                        String sizeunit=" bytes";
+                        Long size=imageSize;
+                        if(size>1024)
+                        {
+                            size=size/1024;
+                            sizeunit=" KB";
                         }
-                        finish();
-                        dialog.dismiss();
-                        Intent intent = new Intent(BigImageActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
+                        if(size>1024)
+                        {
+                            size=size/1024;
+                            sizeunit=" MB";
+                        }
+                        detailDialog.setMessage("Dung lượng: "+size + sizeunit+"\n"+"Ngày tạo: "+imageDate+"\n"+"Đường dẫn: "+imagePath);
+                        detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        detailDialog.create().show();
+                        return true;
+                    case R.id.delete_pic:
+                        AlertDialog.Builder builder = new AlertDialog.Builder(BigImageActivity.this);
+                        Uri targetUri = Uri.parse(imagePath);
+                        builder.setTitle("Confirm");
+                        builder.setMessage("Do you want to delete this image?");
 
-                });
+                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                                if (ContextCompat.checkSelfPermission(context,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                    ActivityCompat.requestPermissions((Activity) context,
+                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_REQUEST);
+                                } else {
+                                    // Nếu đã có quyền, thực hiện xóa ảnh
+                                    deleteImage(imagePath);
+                                }
+                                finish();
+                                dialog.dismiss();
+                                Intent intent = new Intent(BigImageActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
 
-                        // Do nothing
-                        dialog.dismiss();
-                    }
-                });
+                        });
 
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
+                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Lấy ảnh để share
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
-                Bitmap bitmap = bitmapDrawable.getBitmap();
-                shareImageAndText(bitmap);
-            }
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-        });
-        btnDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Tạo và hiển thị Fragment
-                //DetailFragment fragment = new DetailFragment();
-                AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImageActivity.this);
+                                // Do nothing
+                                dialog.dismiss();
+                            }
+                        });
 
-                detailDialog.setTitle("Chi tiết");
-                detailDialog.setMessage("Dung lượng: "+imageSize);
-                detailDialog.setMessage("Ngày tạo: "+imageDate);
-                detailDialog.setMessage("Đường dẫn: "+imagePath);
-
-                detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                detailDialog.create().show();
-
-                /*
-
-                Bundle data=new Bundle();
-                data.putLong("imageSize",imageSize);
-                data.putString("imageDate",imageDate);
-                data.putString("imagePath",imagePath);
-                fragment.setArguments(data);
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.fragmentDetail, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-
-                 */
-
-            }
-        });
-        btnAddDescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String add=et_Description.getText().toString();
-
-                if(imageDescription[0] !=null)
-                {
-                    imageDescription[0] = imageDescription[0] + add;
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                        return true;
+                    case R.id.edit_pic:
+                        return true;
+                    case R.id.description_pic:_pic:
+                        descriptionFragment=new DescriptionFragment();
+                        descriptionFragment.setArguments(des);
+                        descriptionFragment.show(getSupportFragmentManager(), "dialog");
+                        return true;
                 }
-                else imageDescription[0] = add;
-
-
-
-                tv_Description.setText(imageDescription[0]);
-                et_Description.setText("");
-                /*
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DESCRIPTION,imageDescription[0]);
-                Uri imageUri = Uri.parse(imagePath);
-                int rowsUpdated = getContentResolver().update(imageUri, values, null, null);
-
-                 */
-
+                return false;
             }
         });
+
 
 
 
