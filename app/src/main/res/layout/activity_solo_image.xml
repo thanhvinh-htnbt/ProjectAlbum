@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="3dp" >
+    android:padding="3dp">
     <TextView android:id="@+id/txtSoloMsg"
         android:layout_width="match_parent"
         android:layout_height="40dp"/>
@@ -12,56 +13,16 @@
         android:layout_height="0dip"
         android:layout_gravity="center|fill"
         android:layout_weight="2" />
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <FrameLayout android:id="@+id/fragmentDetail"
-            android:layout_width="200dp"
-            android:layout_height="200dp"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView android:id="@+id/tv_Description"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"/>
-            <EditText android:id="@+id/et_Description"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text=""/>
-            <Button android:id="@+id/btn_Add_Description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="Add Description"/>
-        </LinearLayout>
-    </LinearLayout>
 
-    <LinearLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <Button android:id="@+id/btnSoloBack"
-            android:layout_width="100dip"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Back" />
-        <Button android:id="@+id/btnSoloDelete"
-            android:layout_width="100dip"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:text="Delete" />
-        <Button android:id="@+id/btn_share_image"
-            android:layout_width="100dip"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:text="Share" />
-        <Button android:id="@+id/btn_detail"
-            android:layout_width="100dip"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:text="Detail" />
-    </LinearLayout>
+        android:id="@+id/bottomPictureNavigationView"
+        android:layout_gravity="bottom"
+        app:itemIconTint="@color/main_color"
+        app:labelVisibilityMode="unlabeled"
+        android:background="?android:attr/windowBackground"
+
+        app:menu="@menu/bottom_picture_nav_menu"/>
 
 </LinearLayout>
