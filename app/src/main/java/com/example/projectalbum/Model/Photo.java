@@ -18,13 +18,6 @@ public class Photo {
 
     public Photo(){}
 
-//    public Photo(int id, String name,  String filePath, Integer largeImages) {
-//        this.id = id;
-//        this.name = name;
-////        this.listIDAlbum = listIDAlbum;
-//        this.filePath = filePath;
-//        this.largeImages = largeImages;
-
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -50,9 +43,7 @@ public class Photo {
         return filePath;
     }
 
-//    public Integer getLargeImages() {
-//        return largeImages;
-//    }
+
 
     public String getDateTaken() {
         return dateTaken;

@@ -24,7 +24,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,13 +37,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
+import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.projectalbum.Adapter.ImagePagerAdapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Fragment.DescriptionFragment;
@@ -68,7 +68,7 @@ public class BigImageActivity extends AppCompatActivity {
 
     String imagePath, imageDate, imageName;
     Long imageSize;
-    private int currentItem;
+    private int currentItem=0;
     private static final String TAG = "MyApp";
     final String[] imageDescription={""};
 
@@ -88,8 +88,6 @@ public class BigImageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         context =this;
 
         photoList=getListPhoto(context);
@@ -106,16 +104,12 @@ public class BigImageActivity extends AppCompatActivity {
         toolbar.setTitle(imageName);
 
 
-
-
-
-
-
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList, imagePath);
         viewPager.setAdapter(adapter);
         for (int i = 0; i < photoList.size(); i++) {
             if (photoList.get(i).getfilePath().equals(imagePath)) {
+                currentItem=i;
                 adapter.setSelectedIndex(i);
                 break;
             }
@@ -131,8 +125,8 @@ public class BigImageActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 // Cập nhật currentItem và thanh công cụ với thông tin từ ImageModel hiện tại
-                currentItem = position;
-                updateToolbarWithImageInfo(photoList.get(position));
+                //currentItem = position;
+                updateToolbarWithImageInfo(photoList.get(currentItem+position));
             }
 
             @Override
@@ -141,27 +135,10 @@ public class BigImageActivity extends AppCompatActivity {
         });
 
         // Khởi tạo currentItem và cập nhật thanh công cụ với thông tin từ ImageModel đầu tiên
-        currentItem = 0;
-        updateToolbarWithImageInfo(photoList.get(0));
-
-        /*
-        int currentItem = adapter.getIndex();
-        imagePath =photoList.get(currentItem).getfilePath();
-        for(int i=0;i<photoList.size();i++)
-        {
-            if(photoList.get(i).getfilePath()==imagePath)
-            {
-                imageDate = photoList.get(i).getDateTaken();
-                imageSize = photoList.get(i).getSize();
-                imageDescription[0] =photoList.get(i).getDescription();
-            }
-        }
+        //currentItem = 0;
+        updateToolbarWithImageInfo(photoList.get(currentItem));
 
 
-
-        Log.i(TAG, "---------------------------------------------------- " );
-        Log.i(TAG, "ID " + currentItem);
-        */
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
@@ -191,7 +168,23 @@ public class BigImageActivity extends AppCompatActivity {
                          */
                         shareImageAndText(bitmap);
                         return true;
-                    case R.id.detail_pic:_pic:
+                    case R.id.edit_pic:
+                        Intent editIntent = new Intent(BigImageActivity.this, DsPhotoEditorActivity.class);
+
+                        File file = new File(imagePath);
+                        Uri contentUri = getImageContentUri(file);
+
+                        editIntent.setData(contentUri);
+
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "Nhom 1");
+
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#00000000"));
+
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
+
+                        startActivity(editIntent);
+                        return true;
+                    case R.id.detail_pic:
                         detailDialog.setTitle("Chi tiết");
                         String sizeunit=" bytes";
                         Long size=imageSize;
@@ -253,9 +246,8 @@ public class BigImageActivity extends AppCompatActivity {
                         AlertDialog alert = builder.create();
                         alert.show();
                         return true;
-                    case R.id.edit_pic:
-                        return true;
-                    case R.id.description_pic:_pic:
+
+                    case R.id.description_pic:
                         descriptionFragment=new DescriptionFragment();
                         descriptionFragment.setArguments(des);
                         descriptionFragment.show(getSupportFragmentManager(), "dialog");
