@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.projectalbum.Activity.MainActivity;
 import com.example.projectalbum.Activity.SeachImageActivity;
+import com.example.projectalbum.Activity.SlideShowActivity;
 import com.example.projectalbum.Adapter.Category_Adapter;
 import com.example.projectalbum.Adapter.Photo_Adapter;
 import com.example.projectalbum.Database.DB;
@@ -167,6 +168,11 @@ public class ShowAllPhotoFragment extends Fragment {
                     case R.id.searchPhoto:
                         Intent intent = new Intent(context, SeachImageActivity.class);
                         startActivity(intent);
+                        break;
+
+                    case R.id.slideShow:
+                        Intent slideshow = new Intent(context, SlideShowActivity.class);
+                        startActivity(slideshow);
                         break;
 
                     case R.id.gridSetting:

@@ -7,6 +7,11 @@
         android:title="search"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/slideShow"
+        android:icon="@drawable/ic_slideshow"
+        android:title="Slide show all photo"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/gridSetting"
         android:icon="@drawable/ic_4grid"
         android:title="grid"
