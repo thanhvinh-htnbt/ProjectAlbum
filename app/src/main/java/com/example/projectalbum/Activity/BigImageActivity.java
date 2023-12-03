@@ -46,9 +46,9 @@ import android.widget.Toast;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 
-import com.example.projectalbum.Adapter.ImagePagerAdapter;
-
 import com.example.projectalbum.Adapter.ImagePager_Adapter;
+
+
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
