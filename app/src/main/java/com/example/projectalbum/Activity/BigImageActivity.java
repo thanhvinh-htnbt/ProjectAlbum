@@ -22,12 +22,16 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
+
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +42,7 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.example.projectalbum.Adapter.ImagePagerAdapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Fragment.DescriptionFragment;
 import com.example.projectalbum.Model.Photo;
@@ -62,6 +67,7 @@ public class BigImageActivity extends AppCompatActivity {
     String imagePath;
     String imageDate;
     Long imageSize;
+    private static final String TAG = "MyApp";
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +79,11 @@ public class BigImageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
         context =this;
 
         photoList=getListPhoto(context);
-        imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
+        //imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
 
         // Nhận giá trị kiểu string từ Intent trước
         imagePath = getIntent().getStringExtra("imagePath");
@@ -84,9 +91,41 @@ public class BigImageActivity extends AppCompatActivity {
         imageSize = getIntent().getLongExtra("imageSize",0);
         final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
 
+
+
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList,imagePath);
+        viewPager.setAdapter(adapter);
+
+        /*
+        int currentItem = adapter.getIndex();
+        imagePath =photoList.get(currentItem).getfilePath();
+        for(int i=0;i<photoList.size();i++)
+        {
+            if(photoList.get(i).getfilePath()==imagePath)
+            {
+                imageDate = photoList.get(i).getDateTaken();
+                imageSize = photoList.get(i).getSize();
+                imageDescription[0] =photoList.get(i).getDescription();
+            }
+        }
+
+
+
+        Log.i(TAG, "---------------------------------------------------- " );
+        Log.i(TAG, "ID " + currentItem);
+        */
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
+        int width = options.outWidth;
+        int height = options.outHeight;
+
+
         // set caption-and-large picture
         //truyền ảnh vào
-        Glide.with(context).load(imagePath).into(imgSoloPhoto);
+        //Glide.with(context).load(imagePath).into(imgSoloPhoto);
 
         AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImageActivity.this);
         Bundle des=new Bundle();
@@ -99,9 +138,13 @@ public class BigImageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.share_pic:
+                        /*
                         //Lấy ảnh để share
                         BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
                         Bitmap bitmap = bitmapDrawable.getBitmap();
+                        shareImageAndText(bitmap);
+                        return true;
+                         */
                         shareImageAndText(bitmap);
                         return true;
                     case R.id.detail_pic:_pic:
@@ -118,7 +161,7 @@ public class BigImageActivity extends AppCompatActivity {
                             size=size/1024;
                             sizeunit=" MB";
                         }
-                        detailDialog.setMessage("Dung lượng: "+size + sizeunit+"\n"+"Ngày tạo: "+imageDate+"\n"+"Đường dẫn: "+imagePath);
+                        detailDialog.setMessage("Dung lượng: "+size + sizeunit+"\n"+"Kích thước: " + width + " x " + height+"\n"+"Ngày tạo: "+imageDate+"\n"+"Đường dẫn: "+imagePath);
                         detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

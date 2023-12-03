@@ -12,11 +12,10 @@
 
     </include>
 
-    <ImageView android:id="@+id/imgSolo"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_gravity="center|fill"
-        android:layout_weight="2" />
+        android:layout_height="580dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
