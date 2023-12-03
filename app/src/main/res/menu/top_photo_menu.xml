@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/searchPhoto"
+        android:icon="@drawable/ic_search"
+        android:title="search"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/slideShow"
+        android:icon="@drawable/ic_slideshow"
+        android:title="Slide show all photo"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/gridSetting"
+        android:icon="@drawable/ic_4grid"
+        android:title="grid"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/sortByDateDec"
+        android:title="Sắp xếp theo ngày giảm dần"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/sortByDateAsc"
+        android:title="Sắp xếp theo ngày tăng dần"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/sortByNameDec"
+        android:title="Sắp xếp theo tên giảm dần"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/sortByNameAsc"
+        android:title="Sắp xếp theo tên tăng dần"
+        app:showAsAction="never"
+        />
+</menu>

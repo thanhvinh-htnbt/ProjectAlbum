@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nhập số giây mỗi slide"/>
+        android:text="     Nhập số giây mỗi slide"/>
     <EditText android:id="@+id/et_numbersecond"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -19,15 +19,15 @@
             <RadioButton android:id="@+id/rb_effect1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Effect1"/>
+                android:text="Fade"/>
             <RadioButton android:id="@+id/rb_effect2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Effect2"/>
+                android:text="Rotate"/>
             <RadioButton android:id="@+id/rb_effect3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Effect3"/>
+                android:text="RightSlider"/>
         </RadioGroup>
     </LinearLayout>
 

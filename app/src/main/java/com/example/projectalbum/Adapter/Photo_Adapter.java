@@ -25,17 +25,14 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
     private List<Photo> photoList;
     private List<Category> listCategory;
 
-//    public Photo_Adapter(Context context, List<Photo> photoList, AdapterListener adapterListener) {
-//        this.context = context;
-//        this.photoList = photoList;
-//       // this.adapterListener = adapterListener;
-//    }
     public Photo_Adapter(Context context, List<Photo> photoList) {
         this.context = context;
         this.photoList = photoList;
-       // this.adapterListener = adapterListener;
     }
 
+    public void setPhotoList(List<Photo> photoList){
+        this.photoList = photoList;
+        notifyDataSetChanged();}
 
     public void setListCategory(List<Category> listCategory) {
         this.listCategory = listCategory;
@@ -50,10 +47,11 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String imagePath = photoList.get(position).getfilePath();
+        String imagePath = photoList.get(position).getFilePath();
         String imageDate = photoList.get(position).getDateTaken();
         Long imageSize = photoList.get(position).getSize();
         String imageDescription=photoList.get(position).getDescription();
+        String imageName = photoList.get(position).getName();
 
         //truyền ảnh vào ImageView
         Glide.with(context).load(imagePath).into(holder.imageView);
@@ -67,6 +65,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
                     intent.putExtra("imageDate", imageDate);
                     intent.putExtra("imageSize", imageSize);
                     intent.putExtra("imageDescription", imageDescription);
+                    intent.putExtra("imageName",imageName);
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
@@ -86,6 +85,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
         ImageView imageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
         }
     }

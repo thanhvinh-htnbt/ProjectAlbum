@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Photo {
@@ -15,22 +17,12 @@ public class Photo {
     private String name;
     //danh sách album chứa hình ảnh này
     private List<Integer> listIDAlbum = new ArrayList<>();
-    //để test sẽ thay đổi sau
     private String filePath;
-
     private Long size;
-
     private String Description;
 
 
     public Photo(){}
-
-//    public Photo(int id, String name,  String filePath, Integer largeImages) {
-//        this.id = id;
-//        this.name = name;
-////        this.listIDAlbum = listIDAlbum;
-//        this.filePath = filePath;
-//        this.largeImages = largeImages;
 
 
     public void setFilePath(String filePath) {
@@ -41,6 +33,10 @@ public class Photo {
         return id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -49,13 +45,11 @@ public class Photo {
         return listIDAlbum;
     }
 
-    public String getfilePath() {
+    public String getFilePath() {
         return filePath;
     }
 
-//    public Integer getLargeImages() {
-//        return largeImages;
-//    }
+
 
     public String getDateTaken() {
         return dateTaken;
@@ -93,4 +87,27 @@ public class Photo {
         }
         return datelong;
     }
+    // Sắp xếp theo ngày tăng dần
+
+
+    // Sắp xếp theo tên tăng dần
+    public static void sortByNameAscending(List<Photo> photoList) {
+        Collections.sort(photoList, new Comparator<Photo>() {
+            @Override
+            public int compare(Photo photo1, Photo photo2) {
+                return photo1.getName().compareTo(photo2.getName());
+            }
+        });
+    }
+
+    // Sắp xếp theo tên giảm dần
+    public static void sortByNameDescending(List<Photo> photoList) {
+        Collections.sort(photoList, new Comparator<Photo>() {
+            @Override
+            public int compare(Photo photo1, Photo photo2) {
+                return photo2.getName().compareTo(photo1.getName());
+            }
+        });
+    }
+
 }

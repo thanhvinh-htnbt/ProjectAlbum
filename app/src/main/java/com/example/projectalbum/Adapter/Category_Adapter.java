@@ -24,15 +24,26 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
     private Context context;
     private List<Category> listCategory;
 
+    private int column;
 
 
     public Category_Adapter(Context context) {
         this.context = context;
+        column = 4;
     }
 
     public void setData(List<Category> listCategory){
         this.listCategory = listCategory;
         notifyDataSetChanged();
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+        notifyDataSetChanged();
+    }
+
+    public int getColumn() {
+        return column;
     }
 
     @NonNull
@@ -52,7 +63,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
         holder.tvNameCategory.setText(category.getNameCategory());
 
         //Set up layout
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 4);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, column);
         holder.rcvPictures.setLayoutManager(gridLayoutManager);
 
         Photo_Adapter photoAdapter = new Photo_Adapter(context.getApplicationContext(),category.getListPhoto());
@@ -66,7 +77,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
 
                 //Lấy imagePath của ảnh được click trong category
 
-                String imagePath = category.getListPhoto().get(holder.getAdapterPosition()).getfilePath();
+                String imagePath = category.getListPhoto().get(holder.getAdapterPosition()).getFilePath();
                 String imageDate = category.getListPhoto().get(holder.getAdapterPosition()).getDateTaken();
                 Long imageSize = category.getListPhoto().get(holder.getAdapterPosition()).getSize();
                 String imageDescription=category.getListPhoto().get(holder.getAdapterPosition()).getDescription();

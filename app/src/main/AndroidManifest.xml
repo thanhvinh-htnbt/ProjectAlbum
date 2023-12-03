@@ -33,7 +33,9 @@
             android:name=".Activity.BigImageActivity"
             android:exported="false"
             android:parentActivityName=".Activity.MainActivity"/>
-
+        <activity
+            android:name=".Activity.SeachImageActivity"
+            android:exported="false" />
 
         <activity
             android:name=".Activity.ListAlbumActivity"
@@ -43,38 +45,33 @@
             android:exported="false" />
         <activity
             android:name=".Activity.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.TestActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
-<!--        <activity-->
-<!--            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"/>-->
-<!--        <activity-->
-<!--            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorStickerActivity"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />-->
-<!--        <activity-->
-<!--            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorTextActivity"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:theme="@android:style/Theme.Material.NoActionBar"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
-<!--        <activity-->
-<!--            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorCropActivity"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />-->
-<!--        <activity-->
-<!--            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorDrawActivity"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />-->
-
+        <activity
+            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"/>
+        <activity
+            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorStickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
+        <activity
+            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorTextActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Material.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
+        <activity
+            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorDrawActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
