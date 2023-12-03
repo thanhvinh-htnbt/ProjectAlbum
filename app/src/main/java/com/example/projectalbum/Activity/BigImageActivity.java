@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -119,7 +120,7 @@ public class BigImageActivity extends AppCompatActivity {
         ImagePager_Adapter adapter = new ImagePager_Adapter(context, photoList, imagePath);
         viewPager.setAdapter(adapter);
         for (int i = 0; i < photoList.size(); i++) {
-            if (photoList.get(i).getFilePath().equals(imagePath)) {
+            if (photoList.get(i).getfilePath().equals(imagePath)) {
                 currentItem=i;
                 adapter.setSelectedIndex(i);
                 break;
@@ -273,7 +274,7 @@ public class BigImageActivity extends AppCompatActivity {
 
     private void updateToolbarWithImageInfo(Photo imageModel) {
 
-        imagePath=imageModel.getFilePath();
+        imagePath=imageModel.getfilePath();
         imageDate=imageModel.getDateTaken();
         imageSize=imageModel.getSize();
         imageDescription[0]=imageModel.getDescription();

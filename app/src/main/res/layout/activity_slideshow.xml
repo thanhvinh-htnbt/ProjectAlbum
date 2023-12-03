@@ -18,20 +18,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
         <Button android:id="@+id/btnBack_SlideShow"
-            android:layout_width="100dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:layout_weight="1"
+
             android:text="Back" />
         <Button android:id="@+id/btnStop_SlideShow"
-            android:layout_width="100dip"
+            android:layout_width="wrap_content"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Stop" />
         <Button android:id="@+id/btnContinue_SlideShow"
-            android:layout_width="100dip"
+            android:layout_width="wrap_content"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Continue" />
     </LinearLayout>
 
 </LinearLayout>
+
