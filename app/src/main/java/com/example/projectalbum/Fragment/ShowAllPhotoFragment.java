@@ -174,27 +174,7 @@ public class ShowAllPhotoFragment extends Fragment {
         photoAdapter = new Photo_Adapter(getContext(), photoList);
         recyclerView.setAdapter(photoAdapter);
     }
-    private Uri imageUri;
-    private void takenImg() {
-        int permissionCheckStorage = ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA);
-        if (permissionCheckStorage != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA},MY_CAMERA_PERMISSION_CODE );
-        } else {
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, "New Picture");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-            imageUri = getActivity().getApplicationContext().getContentResolver().insert(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            startActivityForResult(intent, PICTURE_RESULT);
-            // TODO Simply append one image to the allImages list. No need to loop through it.
-            //        GetAllPhotoFromGallery.updateNewImages();
-            //        GetAllPhotoFromGallery.refreshAllImages();
-            categoryAdapter.setData(DB.getListCategory(main));
-        }
-    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -233,6 +213,10 @@ public class ShowAllPhotoFragment extends Fragment {
                     case R.id.slideShow:
                         Intent slideshow = new Intent(context, SlideShowActivity.class);
                         startActivity(slideshow);
+                        break;
+                    case R.id.mn_camera:
+//                        Toast.makeText(context, "TakeImage", Toast.LENGTH_SHORT).show();
+                        takenImg();
                         break;
 
                     case R.id.gridSetting:
@@ -275,6 +259,27 @@ public class ShowAllPhotoFragment extends Fragment {
                 return true;
             }
         });
+    }
+    private Uri imageUri;
+    private void takenImg() {
+//        Toast.makeText(context, "TakeImage", Toast.LENGTH_SHORT).show();
+        int permissionCheckStorage = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA);
+        if (permissionCheckStorage != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA},MY_CAMERA_PERMISSION_CODE );
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+            values.put(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, "Camera");
+            imageUri = getActivity().getApplicationContext().getContentResolver().insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, PICTURE_RESULT);
+
+            categoryAdapter.setData(DB.getListCategory(main));
+        }
     }
 
 }
