@@ -29,7 +29,7 @@ public class ImagePager_Adapter extends PagerAdapter {
         this.photoList = photoList;
         this.imagePathx=imagePath;
         for (int i = 0; i < photoList.size(); i++) {
-            if (photoList.get(i).getfilePath().equals(imagePath)) {
+            if (photoList.get(i).getFilePath().equals(imagePath)) {
                 selectedIndex = i;
                 break;
             }
@@ -65,7 +65,7 @@ public class ImagePager_Adapter extends PagerAdapter {
         ImageView imageView = view.findViewById(R.id.imageView);
 
 
-        String imagePath = photoList.get(selectedIndex+position).getfilePath();
+        String imagePath = photoList.get(selectedIndex+position).getFilePath();
 
 
         Glide.with(context).load(imagePath).into(imageView);

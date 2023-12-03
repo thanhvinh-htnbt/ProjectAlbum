@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,18 +28,16 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.projectalbum.Activity.MainActivity;
 import com.example.projectalbum.Activity.SeachImageActivity;
 import com.example.projectalbum.Adapter.Category_Adapter;
+import com.example.projectalbum.Adapter.Photo_Adapter;
 import com.example.projectalbum.Database.DB;
+import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ShowAllPhotoFragment# newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ShowAllPhotoFragment extends Fragment {
 
     MainActivity main;
@@ -46,19 +45,15 @@ public class ShowAllPhotoFragment extends Fragment {
     Toolbar toolbar_allphoto;
 
     Category_Adapter categoryAdapter;
+    Photo_Adapter photoAdapter;
 
     LinearLayout  layout_show_all_photo;
     List<Photo>photoList = new ArrayList<>();
+    List<Category> categoryList;
 
-//    public static show_all_photo_fragment newInstance(String id)
-//    {
-//        Toast.makeText(this.getActivity(), "debug", Toast.LENGTH_SHORT).show();
-//        show_all_photo_fragment fragment = new show_all_photo_fragment();
-//        Bundle args = new Bundle();
-//        args.putString("id", id);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    int flagLayout, column;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +75,10 @@ public class ShowAllPhotoFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         Bundle extras = main.getIntent().getExtras();
+
+        column = 4;
+        flagLayout = 1;
+        categoryList = DB.getListCategory(main);
 
         if (extras != null) {
             String value = extras.getString("id");
@@ -106,13 +105,14 @@ public class ShowAllPhotoFragment extends Fragment {
         else
         {
 
-            loadImage(layout_show_all_photo);
+            loadImageCategoryList(layout_show_all_photo);
         }
 
 
         return layout_show_all_photo;
     }
-    private void loadImage(LinearLayout layout) {
+    private void loadImageCategoryList(LinearLayout layout) {
+        flagLayout = 1;
 
         //Chuẩn bị recyclerView
         RecyclerView recyclerView = layout.findViewById(R.id.recyclerViewImg);
@@ -122,8 +122,22 @@ public class ShowAllPhotoFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        categoryAdapter.setData(DB.getListCategory(main));
+        categoryAdapter.setData(categoryList);
+        categoryAdapter.setColumn(column);
+
         recyclerView.setAdapter(categoryAdapter);
+    }
+
+    private void loadImagePhotoList(LinearLayout layout) {
+
+        flagLayout = 2;
+
+        RecyclerView recyclerView = layout.findViewById(R.id.recyclerViewImg);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), column);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        photoAdapter = new Photo_Adapter(getContext(), photoList);
+        recyclerView.setAdapter(photoAdapter);
     }
 
     @Override
@@ -136,7 +150,7 @@ public class ShowAllPhotoFragment extends Fragment {
         {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(context,"Read external permission granted", Toast.LENGTH_SHORT).show();
-                loadImage(layout_show_all_photo);
+                loadImageCategoryList(layout_show_all_photo);
             }
             else
             {
@@ -157,18 +171,41 @@ public class ShowAllPhotoFragment extends Fragment {
                         Intent intent = new Intent(context, SeachImageActivity.class);
                         startActivity(intent);
                         break;
+
                     case R.id.gridSetting:
-                        if(categoryAdapter.getColumn() == 4){
+                        if(column == 4){
                             menuItem.setIcon(R.drawable.ic_1grid);
-                            categoryAdapter.setColumn(1);
+                            column = 1;
                         }
-                        else if(categoryAdapter.getColumn() == 1){
+                        else if(column == 1){
                             menuItem.setIcon(R.drawable.ic_2grid);
-                            categoryAdapter.setColumn(2);
+                            column = 2;
                         } else {
                             menuItem.setIcon(R.drawable.ic_4grid);
-                            categoryAdapter.setColumn(4);
+                            column = 4;
                         }
+                        if(flagLayout == 1){categoryAdapter.setColumn(column);}
+                        else {loadImagePhotoList(layout_show_all_photo);}
+                        break;
+
+                    case R.id.sortByDateAsc:
+                        Category.sortByDateAscending(categoryList);
+                        loadImageCategoryList(layout_show_all_photo);
+                        break;
+
+                    case R.id.sortByDateDec:
+                        Category.sortByDateDescending(categoryList);
+                        loadImageCategoryList(layout_show_all_photo);
+                        break;
+
+                    case R.id.sortByNameAsc:
+                        Photo.sortByNameAscending(photoList);
+                        loadImagePhotoList(layout_show_all_photo);
+                        break;
+
+                    case R.id.sortByNameDec:
+                        Photo.sortByNameDescending(photoList);
+                        loadImagePhotoList(layout_show_all_photo);
                         break;
 
                 }

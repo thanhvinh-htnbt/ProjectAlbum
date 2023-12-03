@@ -30,8 +30,8 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
         this.photoList = photoList;
     }
 
-    public void setFilteredList(List<Photo> filteredList){
-        this.photoList = filteredList;
+    public void setPhotoList(List<Photo> photoList){
+        this.photoList = photoList;
         notifyDataSetChanged();}
 
     public void setListCategory(List<Category> listCategory) {
@@ -47,7 +47,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String imagePath = photoList.get(position).getfilePath();
+        String imagePath = photoList.get(position).getFilePath();
         String imageDate = photoList.get(position).getDateTaken();
         Long imageSize = photoList.get(position).getSize();
         String imageDescription=photoList.get(position).getDescription();

@@ -10,11 +10,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
@@ -93,7 +91,7 @@ public class SlideShowActivity extends AppCompatActivity {
 
 
                     // Nhận giá trị kiểu string từ Intent trước
-                    String imagePath = photoList.get(index[0]).getfilePath();
+                    String imagePath = photoList.get(index[0]).getFilePath();
                     // set caption-and-large picture
                     txtSoloMsg.setText(" Position= " + 1);
                     //truyền ảnh vào

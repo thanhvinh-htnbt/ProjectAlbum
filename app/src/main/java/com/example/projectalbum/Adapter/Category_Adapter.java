@@ -77,7 +77,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
 
                 //Lấy imagePath của ảnh được click trong category
 
-                String imagePath = category.getListPhoto().get(holder.getAdapterPosition()).getfilePath();
+                String imagePath = category.getListPhoto().get(holder.getAdapterPosition()).getFilePath();
                 String imageDate = category.getListPhoto().get(holder.getAdapterPosition()).getDateTaken();
                 Long imageSize = category.getListPhoto().get(holder.getAdapterPosition()).getSize();
                 String imageDescription=category.getListPhoto().get(holder.getAdapterPosition()).getDescription();

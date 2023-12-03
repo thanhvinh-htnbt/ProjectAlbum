@@ -7,12 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridLayout;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.projectalbum.Adapter.Category_Adapter;
@@ -152,7 +149,7 @@ public class SeachImageActivity extends AppCompatActivity {
         if(filteredListPhoto.isEmpty()){
             Toast.makeText(this,"Empty Result",Toast.LENGTH_SHORT).show();
         } else{
-            photoAdapter.setFilteredList(filteredListPhoto);
+            photoAdapter.setPhotoList(filteredListPhoto);
         }
 
     }

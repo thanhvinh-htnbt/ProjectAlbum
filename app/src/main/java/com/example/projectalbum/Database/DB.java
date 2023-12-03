@@ -68,12 +68,9 @@ public class DB {
     //todo
     }
 
-
-//=========
     public static List<Photo> getListPhoto(Context context)
     {
         List<Photo> photoList = new ArrayList<>();
-//
 
         int columnIndexData, nameIndex, dateIndex, descriptionIndex;
 
@@ -143,9 +140,9 @@ public class DB {
     {
         List<Photo> photoList = new ArrayList<>();
 
-        int columnIndexData, thumb, dateIndex;
+        int columnIndexData, dateIndex, nameIndex;
 
-        String thumbnail = null;
+        String name = null;
         Long dateTaken = null;
         String imagePath = null;
         Long size;
@@ -153,12 +150,12 @@ public class DB {
         //Cột của bảng
         String[] projection = {MediaStore.MediaColumns.DATA,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.Media.DATE_TAKEN
+                MediaStore.Images.Media.DATE_TAKEN,
+                MediaStore.Images.Media.DISPLAY_NAME
         };
 
         String orderBy = MediaStore.Images.Media.DATE_TAKEN;
 
-        // Thêm điều kiện để chỉ lấy hình ảnh thuộc album có ID được truyền vào
         String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
         String[] selectionArgs = { id };
 
@@ -166,7 +163,7 @@ public class DB {
                 selection,selectionArgs,orderBy + " DESC");
 
         columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        //thumb = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA);
+        nameIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
         dateIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN);
 
         Calendar myCal = Calendar.getInstance();
@@ -174,7 +171,7 @@ public class DB {
 
         if (cursor != null){
             while (cursor.moveToNext()){
-                //thumbnail = cursor.getString(thumb);
+                name = cursor.getString(nameIndex);
                 dateTaken = cursor.getLong(dateIndex);
                 imagePath = cursor.getString(columnIndexData);
 
@@ -189,6 +186,7 @@ public class DB {
                 image.setDateTaken(dateText);
                 image.setFilePath(imagePath);
                 image.setSize(size);
+                image.setName(name);
 
                 photoList.add(image);
 

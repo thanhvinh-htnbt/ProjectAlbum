@@ -11,4 +11,24 @@
         android:icon="@drawable/ic_4grid"
         android:title="grid"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/sortByDateDec"
+        android:title="Sắp xếp theo ngày giảm dần"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/sortByDateAsc"
+        android:title="Sắp xếp theo ngày tăng dần"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/sortByNameDec"
+        android:title="Sắp xếp theo tên giảm dần"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/sortByNameAsc"
+        android:title="Sắp xếp theo tên tăng dần"
+        app:showAsAction="never"
+        />
 </menu>
