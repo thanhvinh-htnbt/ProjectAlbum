@@ -112,8 +112,15 @@ public class BigImageActivity extends AppCompatActivity {
 
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList);
+        ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList, imagePath);
         viewPager.setAdapter(adapter);
+        for (int i = 0; i < photoList.size(); i++) {
+            if (photoList.get(i).getfilePath().equals(imagePath)) {
+                adapter.setSelectedIndex(i);
+                break;
+            }
+        }
+
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -162,8 +169,7 @@ public class BigImageActivity extends AppCompatActivity {
         height = options.outHeight;
 
 
-        //truyền ảnh vào
-        //Glide.with(context).load(imagePath).into(imgSoloPhoto);
+
 
         AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImageActivity.this);
         Bundle des=new Bundle();
@@ -263,9 +269,7 @@ public class BigImageActivity extends AppCompatActivity {
 
 
     private void updateToolbarWithImageInfo(Photo imageModel) {
-        // Cập nhật thanh công cụ với thông tin từ ImageModel hiện tại
-        // Ví dụ: toolbar.setTitle(imageModel.getImageName());
-        // ...
+
         imagePath=imageModel.getfilePath();
         imageDate=imageModel.getDateTaken();
         imageSize=imageModel.getSize();
@@ -274,8 +278,7 @@ public class BigImageActivity extends AppCompatActivity {
         bitmap = BitmapFactory.decodeFile(imagePath, options);
         width = options.outWidth;
         height = options.outHeight;
-        imageName = getIntent().getStringExtra("imageName");
-
+        imageName = imageModel.getName();
         toolbar.setTitle(imageName);
     }
 

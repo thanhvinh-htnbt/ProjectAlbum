@@ -25,36 +25,27 @@ public class ImagePagerAdapter extends PagerAdapter {
     private Context context;
     private List<Photo> photoList;
 
-    int index=0;
+    private int selectedIndex = 0;
     String imagePathx;
 
     private static final String TAG = "MyApp";
-    public ImagePagerAdapter(Context context, List<Photo> photoList) {
-        this.context = context;
-        this.photoList = photoList;
-    }
-
-
-    /*
-    public ImagePagerAdapter(Context context, List photoList, String imagePath) {
+    public ImagePagerAdapter(Context context, List<Photo> photoList, String imagePath) {
         this.context = context;
         this.photoList = photoList;
         this.imagePathx=imagePath;
-    }
-
-     */
-
-    public int getIndex(String imagePath) {
-        for(int i=0;i<photoList.size();i++)
-        {
-            if(photoList.get(i).getfilePath()==imagePath)
-            {
-                index=i;
+        for (int i = 0; i < photoList.size(); i++) {
+            if (photoList.get(i).getfilePath().equals(imagePath)) {
+                selectedIndex = i;
+                break;
             }
         }
-
-        return index;
     }
+
+    public void setSelectedIndex(int index) {
+        selectedIndex = index;
+    }
+
+
 
     @Override
     public int getCount() {
@@ -66,30 +57,7 @@ public class ImagePagerAdapter extends PagerAdapter {
         return view == object;
     }
 
-    /*
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_image, container, false);
 
-        ImageView imageView = view.findViewById(R.id.imageView);
-        Log.i(TAG, "---------------------------------------------------- " );
-        Log.i(TAG, "ID " + position);
-
-
-
-        String imagePath = photoList.get(position).getfilePath();
-
-
-
-        Glide.with(context).load(imagePath).into(imageView);
-
-        container.addView(view);
-        return view;
-    }
-
-     */
 
     @NonNull
     @Override
@@ -101,8 +69,8 @@ public class ImagePagerAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.item_image, container, false);
         ImageView imageView = view.findViewById(R.id.imageView);
 
-        String imagePath = photoList.get(position).getfilePath();
 
+        String imagePath = photoList.get(selectedIndex+position).getfilePath();
 
 
         Glide.with(context).load(imagePath).into(imageView);
