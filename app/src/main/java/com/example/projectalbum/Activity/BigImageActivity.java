@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
@@ -32,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +69,15 @@ public class BigImageActivity extends AppCompatActivity {
     String imagePath;
     String imageDate;
     Long imageSize;
+    private int currentItem;
     private static final String TAG = "MyApp";
+    final String[] imageDescription={""};
+
+    int width;
+    int height;
+
+    BitmapFactory.Options options;
+    Bitmap bitmap;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,14 +99,36 @@ public class BigImageActivity extends AppCompatActivity {
         imagePath = getIntent().getStringExtra("imagePath");
         imageDate = getIntent().getStringExtra("imageDate");
         imageSize = getIntent().getLongExtra("imageSize",0);
-        final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
+        imageDescription[0] = getIntent().getStringExtra("imageDescription");
 
 
 
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList,imagePath);
+        ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList);
         viewPager.setAdapter(adapter);
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // Cập nhật currentItem và thanh công cụ với thông tin từ ImageModel hiện tại
+                currentItem = position;
+                updateToolbarWithImageInfo(photoList.get(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        // Khởi tạo currentItem và cập nhật thanh công cụ với thông tin từ ImageModel đầu tiên
+        currentItem = 0;
+        updateToolbarWithImageInfo(photoList.get(0));
 
         /*
         int currentItem = adapter.getIndex();
@@ -119,8 +151,8 @@ public class BigImageActivity extends AppCompatActivity {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-        int width = options.outWidth;
-        int height = options.outHeight;
+        width = options.outWidth;
+        height = options.outHeight;
 
 
         // set caption-and-large picture
@@ -222,6 +254,43 @@ public class BigImageActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private void updateToolbarWithImageInfo(Photo imageModel) {
+        // Cập nhật thanh công cụ với thông tin từ ImageModel hiện tại
+        // Ví dụ: toolbar.setTitle(imageModel.getImageName());
+        // ...
+        imagePath=imageModel.getfilePath();
+        imageDate=imageModel.getDateTaken();
+        imageSize=imageModel.getSize();
+        imageDescription[0]=imageModel.getDescription();
+        options = new BitmapFactory.Options();
+        bitmap = BitmapFactory.decodeFile(imagePath, options);
+        width = options.outWidth;
+        height = options.outHeight;
+    }
+
+
+
+    private Dialog createDescriptionDialog() {
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View dialogView = inflater.inflate(R.layout.dialog_description, null);
+        Dialog desdialog = new Dialog(this);
+        desdialog.setContentView(dialogView);
+        desdialog.setCancelable(false);
+
+
+        Button buttonClose = dialogView.findViewById(R.id.btn_close_des);
+        Button buttonAdd = dialogView.findViewById(R.id.btn_add_des);
+
+        //buttonClose.setOnClickListener();
+
+
+
+        return desdialog;
+        }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
