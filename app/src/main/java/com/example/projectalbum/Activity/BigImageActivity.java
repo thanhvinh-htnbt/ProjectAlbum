@@ -16,6 +16,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,21 +33,19 @@ import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.projectalbum.Adapter.ImagePagerAdapter;
-import com.example.projectalbum.Database.DB;
-import com.example.projectalbum.Fragment.DescriptionFragment;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -60,11 +59,10 @@ public class BigImageActivity extends AppCompatActivity {
     Context context = null;
 
     ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare, btnDetail,btnAddDescription;
     List<Photo> photoList = new ArrayList<>();
     Bundle myOriginalMemoryBundle;
 
-    DescriptionFragment descriptionFragment;
+
 
     String imagePath, imageDate, imageName;
     Long imageSize;
@@ -159,13 +157,7 @@ public class BigImageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.share_pic:
-                        /*
-                        //Lấy ảnh để share
-                        BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
-                        Bitmap bitmap = bitmapDrawable.getBitmap();
-                        shareImageAndText(bitmap);
-                        return true;
-                         */
+
                         shareImageAndText(bitmap);
                         return true;
                     case R.id.edit_pic:
@@ -237,7 +229,6 @@ public class BigImageActivity extends AppCompatActivity {
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 // Do nothing
                                 dialog.dismiss();
                             }
@@ -248,9 +239,7 @@ public class BigImageActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.description_pic:
-                        descriptionFragment=new DescriptionFragment();
-                        descriptionFragment.setArguments(des);
-                        descriptionFragment.show(getSupportFragmentManager(), "dialog");
+                        showDescriptionDialog();
                         return true;
                 }
                 return false;
@@ -276,7 +265,7 @@ public class BigImageActivity extends AppCompatActivity {
 
 
 
-    private Dialog createDescriptionDialog() {
+    public void showDescriptionDialog()  {
 
         LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -286,15 +275,40 @@ public class BigImageActivity extends AppCompatActivity {
         desdialog.setCancelable(false);
 
 
+
+        TextView textView = (TextView) desdialog.findViewById(R.id.tv_description);
+        EditText editText = (EditText) desdialog.findViewById(R.id.et_newdes);
         Button buttonClose = dialogView.findViewById(R.id.btn_close_des);
         Button buttonAdd = dialogView.findViewById(R.id.btn_add_des);
+        textView.setText(imageDescription[0]);
 
-        //buttonClose.setOnClickListener();
+        buttonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Đóng dialog
+                imageDescription[0]=textView.getText().toString();
+                File file = new File(imagePath);
+                Uri imageUri = getImageContentUri(file);
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DESCRIPTION, textView.getText().toString());
+                getContentResolver().update(imageUri, values, null, null);
+                desdialog.dismiss();
+            }
+        });
 
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newdes = editText.getText().toString();
+                editText.setText("");
+                String olddes = textView.getText().toString();
+                textView.setText(olddes+"\n"+newdes);
+            }
+        });
 
+        desdialog.show();
 
-        return desdialog;
-        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
