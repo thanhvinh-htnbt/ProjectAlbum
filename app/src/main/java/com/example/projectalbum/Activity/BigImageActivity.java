@@ -59,9 +59,6 @@ public class BigImageActivity extends AppCompatActivity {
     Context context = null;
     List<Photo> photoList = new ArrayList<>();
 
-
-
-
     String imagePath, imageDate, imageName;
     Long imageSize;
     private int currentItem=0;
@@ -160,8 +157,6 @@ public class BigImageActivity extends AppCompatActivity {
         height = options.outHeight;
 
 
-
-
         AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImageActivity.this);
         Bundle des=new Bundle();
         des.putString("description",imageDescription[0]);
@@ -173,13 +168,6 @@ public class BigImageActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.share_pic:
-                        /*
-                        //Lấy ảnh để share
-                        BitmapDrawable bitmapDrawable = (BitmapDrawable) imgSoloPhoto.getDrawable();
-                        Bitmap bitmap = bitmapDrawable.getBitmap();
-                        shareImageAndText(bitmap);
-                        return true;
-                         */
                         shareImageAndText(bitmap);
                         return true;
                     case R.id.edit_pic:
