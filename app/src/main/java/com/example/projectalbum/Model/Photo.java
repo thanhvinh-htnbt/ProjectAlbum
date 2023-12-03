@@ -1,6 +1,11 @@
 package com.example.projectalbum.Model;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Photo {
@@ -77,4 +82,15 @@ public class Photo {
         this.Description = Description;
     }
 
+    public long getDateTaken2() {
+        long datelong = 0;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = formatter.parse(dateTaken);
+            datelong = date.getTime();
+        } catch (ParseException e) {
+            Log.e("DateConversion", "Failed to parse date: " + dateTaken, e);
+        }
+        return datelong;
+    }
 }

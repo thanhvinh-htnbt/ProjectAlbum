@@ -29,10 +29,10 @@ import java.util.List;
 public class AllPhotoAlbumFragment extends Fragment {
     List<Photo> photoList = new ArrayList<>();
     private static final String ID = "id";
-    private String id = "";
-    private Context context;
+    private static String id = "";
+    private static Context context;
     LinearLayout  layout_show_all_photo;
-
+    static Category_Adapter categoryAdapter;
     public AllPhotoAlbumFragment() {
         // Required empty public constructor
     }
@@ -44,6 +44,11 @@ public class AllPhotoAlbumFragment extends Fragment {
         args.putString(ID, id);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static void loadImages()
+    {
+        categoryAdapter.setData(DB.getListCategory(context, id));
     }
 
     @Override
@@ -82,7 +87,7 @@ public class AllPhotoAlbumFragment extends Fragment {
         RecyclerView recyclerView = layout.findViewById(R.id.recyclerViewImg);
 
         //Set up layout
-        Category_Adapter categoryAdapter = new Category_Adapter(getContext());
+        categoryAdapter = new Category_Adapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 

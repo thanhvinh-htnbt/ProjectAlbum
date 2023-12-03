@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.projectalbum.R;
 
 public class TestActivity extends AppCompatActivity {
     Button btn_main, btn_testAlbum, btn_slideshow;
+
+    ImageButton ibtn_camera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

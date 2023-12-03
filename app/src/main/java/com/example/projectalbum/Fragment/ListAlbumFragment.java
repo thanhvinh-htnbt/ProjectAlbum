@@ -18,11 +18,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -31,10 +35,12 @@ import com.example.projectalbum.Activity.ListAlbumActivity;
 import com.example.projectalbum.Activity.MainActivity;
 import com.example.projectalbum.Activity.PhotoAlbumActivity;
 import com.example.projectalbum.Adapter.Album_Adapter;
+import com.example.projectalbum.Adapter.Image_Select_Adapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Interface.AdapterListener;
 import com.example.projectalbum.Interface.MainActivityListener;
 import com.example.projectalbum.Model.Album;
+import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
 import java.io.File;
@@ -63,6 +69,14 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         fragment.context = context;
         return fragment;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listAlbum = DB.getAlbums(context);
+        albumAdapter.setData(listAlbum);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -191,7 +205,7 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
         } else {
             // Quyền đã được cấp. Hiển thị EditText để người dùng nhập tên và tạo album mới.
-            showCreateAlbumDialog();
+            showCreateAlbumDialog(context);
         }
         //
     }
@@ -204,7 +218,7 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Quyền đã được cấp. Hiển thị EditText để người dùng nhập tên và tạo album mới.
-                    showCreateAlbumDialog();
+                    showCreateAlbumDialog(context);
                 } else {
                     // Quyền đã bị từ chối. Hiển thị thông báo không có quyền tạo album mới.
                     Toast.makeText(this.context, "Không có quyền tạo album mới", Toast.LENGTH_SHORT).show();
@@ -216,10 +230,10 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         ;
     }
 
-    private void showCreateAlbumDialog() {
+    private void showCreateAlbumDialog(Context context) {
         // Hiển thị dialog hoặc EditText để người dùng nhập tên album mới.
         // Tạo một AlertDialog.Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         // Đặt tiêu đề cho AlertDialog
         builder.setTitle("Nhập tên Album mới");
@@ -235,11 +249,55 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String name = input.getText().toString();
-                DB.createNewAlbum(context,name);
-                // Xử lý tạo album với tên đã nhập ở đây
-                Album newAlbum = new Album("1", name, 0, "");
-                listAlbum.add(newAlbum);
-                albumAdapter.notifyDataSetChanged();
+//                DB.createNewAlbum(context,name);
+//                // Xử lý tạo album với tên đã nhập ở đây
+//                Album newAlbum = new Album("1", name, 0, "");
+//                listAlbum.add(newAlbum);
+//                albumAdapter.notifyDataSetChanged();
+                showImageSelectionDialog(context, name);
+            }
+        });
+
+        // Đặt nút Cancel và xử lý sự kiện khi nút Cancel được nhấn
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Hiển thị AlertDialog
+        builder.show();
+    }
+    List<Photo> selectedImages;
+    private void showImageSelectionDialog(Context context, String albumName) {
+        // Tạo một AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+
+        // Đặt tiêu đề cho AlertDialog
+        builder.setTitle("Chọn hình ảnh");
+
+        List<Photo> lp = DB.getListPhoto(context);
+
+        // Tạo một adapter để hiển thị danh sách hình ảnh
+        // Bạn cần thay đổi ImageAdapter để hỗ trợ việc đổi màu viền khi hình ảnh được chọn
+        Image_Select_Adapter imageAdapter = new Image_Select_Adapter(context, lp);
+        GridView gridView = new GridView(context);
+        gridView.setAdapter(imageAdapter);
+        gridView.setNumColumns(3);
+
+        builder.setView(gridView);
+
+        // Đặt nút OK và xử lý sự kiện khi nút OK được nhấn
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Xử lý sự kiện khi nút OK được nhấn
+                // Bạn có thể lấy danh sách các hình ảnh đã được chọn từ ImageAdapter
+                selectedImages = imageAdapter.getSelectedImages();
+                DB.createNewAlbum(context,albumName,selectedImages);
+                albumAdapter.setData(DB.getAlbums(context));
+                // Xử lý danh sách các hình ảnh đã được chọn ở đây
             }
         });
 
@@ -255,4 +313,21 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         builder.show();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == DB.REQUEST_CODE_PERMISSION) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Quyền đã được cấp, thực hiện lại yêu cầu xóa
+                DB.deletePhotos(context, selectedImages);
+                DB.deleteAllEmptyAlbums();
+                listAlbum = DB.getAlbums(context);
+                albumAdapter.setData(listAlbum);
+            } else {
+                // Người dùng từ chối cấp quyền
+                Log.e("DeleteImage", "Permission denied by user");
+            }
+        }
+    }
 }
