@@ -2,6 +2,7 @@ package com.example.projectalbum.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
@@ -18,7 +19,6 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements MainActivityListener {
 
-
     BottomNavigationView bottomNavigationView;
 
     Fragment selectedFragment = null;
@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
                         selectedFragment = new ShowAllPhotoFragment();
                         break;
                     case R.id.nav_album:
-//                        Intent intent = new Intent(MainActivity.this, ListAlbumActivity.class);
-//                        startActivity(intent);
                         selectedFragment = ListAlbumFragment.newInstance(MainActivity.this);
                         break;
                 }
@@ -67,4 +65,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
         intent.putExtra("NAME", name);
         startActivity(intent);
     }
+
 }

@@ -12,9 +12,7 @@ public class Photo {
     private List<Integer> listIDAlbum = new ArrayList<>();
     //để test sẽ thay đổi sau
     private String filePath;
-
     private Long size;
-
     private String Description;
 
 
@@ -34,6 +32,10 @@ public class Photo {
 
     public int getId() {
         return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {

@@ -74,11 +74,10 @@ public class DB {
     {
         List<Photo> photoList = new ArrayList<>();
 //
-//        List<String> pathImg = new ArrayList<>();
 
-        int columnIndexData, thumb, dateIndex, descriptionIndex;
+        int columnIndexData, nameIndex, dateIndex, descriptionIndex;
 
-        String thumbnail = null;
+        String name = null;
         Long dateTaken = null;
         String imagePath = null;
         Long size;
@@ -88,7 +87,8 @@ public class DB {
         String[] projection = {MediaStore.MediaColumns.DATA,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
                 MediaStore.Images.Media.DATE_TAKEN,
-                MediaStore.Images.Media.DESCRIPTION
+                MediaStore.Images.Media.DESCRIPTION,
+                MediaStore.Images.Media.DISPLAY_NAME
         };
 
 
@@ -99,7 +99,7 @@ public class DB {
                 null,null,orderBy + " DESC");
 
         columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        //thumb = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA);
+        nameIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
         dateIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN);
 
         descriptionIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DESCRIPTION);
@@ -111,7 +111,7 @@ public class DB {
 
         if (cursor != null){
             while (cursor.moveToNext()){
-                //thumbnail = cursor.getString(thumb);
+                name = cursor.getString(nameIndex);
                 dateTaken = cursor.getLong(dateIndex);
                 imagePath = cursor.getString(columnIndexData);
 
@@ -129,7 +129,7 @@ public class DB {
                 image.setFilePath(imagePath);
                 image.setSize(size);
                 image.setDescription(description);
-
+                image.setName(name);
 
                 photoList.add(image);
 

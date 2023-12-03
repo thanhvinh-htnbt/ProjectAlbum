@@ -64,8 +64,7 @@ public class BigImageActivity extends AppCompatActivity {
 
     DescriptionFragment descriptionFragment;
 
-    String imagePath;
-    String imageDate;
+    String imagePath, imageDate, imageName;
     Long imageSize;
     private static final String TAG = "MyApp";
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST = 1;
@@ -89,6 +88,10 @@ public class BigImageActivity extends AppCompatActivity {
         imagePath = getIntent().getStringExtra("imagePath");
         imageDate = getIntent().getStringExtra("imageDate");
         imageSize = getIntent().getLongExtra("imageSize",0);
+        imageName = getIntent().getStringExtra("imageName");
+
+        toolbar.setTitle(imageName);
+
         final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
 
 
@@ -123,7 +126,6 @@ public class BigImageActivity extends AppCompatActivity {
         int height = options.outHeight;
 
 
-        // set caption-and-large picture
         //truyền ảnh vào
         //Glide.with(context).load(imagePath).into(imgSoloPhoto);
 

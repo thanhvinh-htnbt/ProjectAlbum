@@ -2,6 +2,7 @@ package com.example.projectalbum.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -17,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.example.projectalbum.Adapter.Category_Adapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Photo;
@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AllPhotoAlbumFragment extends Fragment {
-    List<Photo> photoList = new ArrayList<>();
+
+
     private static final String ID = "id";
     private String id = "";
     private Context context;
@@ -57,8 +58,9 @@ public class AllPhotoAlbumFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         layout_show_all_photo = (LinearLayout) inflater.inflate(R.layout.fragment_show_all_photo, container, false);
+
+
         //Kiểm tra quyền truy cập bộ nhớ
         if(ContextCompat.checkSelfPermission(context,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
@@ -75,6 +77,7 @@ public class AllPhotoAlbumFragment extends Fragment {
         // layout chính
         return layout_show_all_photo;
     }
+
 
     private void loadImage(LinearLayout layout) {
 
