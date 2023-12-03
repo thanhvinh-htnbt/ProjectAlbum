@@ -55,7 +55,7 @@ public class SeachImageActivity extends AppCompatActivity {
         toolbar_searchImage.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed(); // This will simulate the back button press
+                onBackPressed();
             }
         });
 

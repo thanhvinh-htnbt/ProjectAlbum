@@ -55,11 +55,8 @@ import java.util.List;
 
 public class BigImageActivity extends AppCompatActivity {
     Context context = null;
-
-    ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare, btnDetail,btnAddDescription;
     List<Photo> photoList = new ArrayList<>();
-    Bundle myOriginalMemoryBundle;
+
 
     DescriptionFragment descriptionFragment;
 
@@ -81,14 +78,23 @@ public class BigImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solo_image);
 
+
         toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
         toolbar.setNavigationIcon(R.drawable.drawable_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 onBackPressed(); // This will simulate the back button press
             }
         });
+
+
+
+
+
 
         context =this;
 
@@ -104,6 +110,10 @@ public class BigImageActivity extends AppCompatActivity {
         imageName = getIntent().getStringExtra("imageName");
 
         toolbar.setTitle(imageName);
+
+
+        final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
+
 
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
