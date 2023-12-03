@@ -45,11 +45,9 @@ public class ShowAllPhotoFragment extends Fragment {
     Context context = null;
     Toolbar toolbar_allphoto;
 
+    Category_Adapter categoryAdapter;
+
     LinearLayout  layout_show_all_photo;
-    TextView txtSoloMsg;
-    ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare;
-    Bundle myOriginalMemoryBundle;
     List<Photo>photoList = new ArrayList<>();
 
 //    public static show_all_photo_fragment newInstance(String id)
@@ -120,7 +118,7 @@ public class ShowAllPhotoFragment extends Fragment {
         RecyclerView recyclerView = layout.findViewById(R.id.recyclerViewImg);
 
         //Set up layout
-        Category_Adapter categoryAdapter = new Category_Adapter(getContext());
+        categoryAdapter = new Category_Adapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -159,6 +157,20 @@ public class ShowAllPhotoFragment extends Fragment {
                         Intent intent = new Intent(context, SeachImageActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.gridSetting:
+                        if(categoryAdapter.getColumn() == 4){
+                            menuItem.setIcon(R.drawable.ic_1grid);
+                            categoryAdapter.setColumn(1);
+                        }
+                        else if(categoryAdapter.getColumn() == 1){
+                            menuItem.setIcon(R.drawable.ic_2grid);
+                            categoryAdapter.setColumn(2);
+                        } else {
+                            menuItem.setIcon(R.drawable.ic_4grid);
+                            categoryAdapter.setColumn(4);
+                        }
+                        break;
+
                 }
                 return true;
             }

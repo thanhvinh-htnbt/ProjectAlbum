@@ -1,11 +1,7 @@
 package com.example.projectalbum.Adapter;
 
-import static com.example.projectalbum.Database.DB.getListPhoto;
-import com.example.projectalbum.Database.DB;
-
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +14,9 @@ import com.bumptech.glide.Glide;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ImagePagerAdapter extends PagerAdapter {
+public class ImagePager_Adapter extends PagerAdapter {
     private Context context;
     private List<Photo> photoList;
 
@@ -29,7 +24,7 @@ public class ImagePagerAdapter extends PagerAdapter {
     String imagePathx;
 
     private static final String TAG = "MyApp";
-    public ImagePagerAdapter(Context context, List<Photo> photoList, String imagePath) {
+    public ImagePager_Adapter(Context context, List<Photo> photoList, String imagePath) {
         this.context = context;
         this.photoList = photoList;
         this.imagePathx=imagePath;

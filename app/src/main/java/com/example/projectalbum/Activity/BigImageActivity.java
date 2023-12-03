@@ -32,7 +32,6 @@ import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,11 +40,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
-import com.example.projectalbum.Adapter.ImagePagerAdapter;
-import com.example.projectalbum.Database.DB;
+import com.example.projectalbum.Adapter.ImagePager_Adapter;
 import com.example.projectalbum.Fragment.DescriptionFragment;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
@@ -85,8 +82,13 @@ public class BigImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_solo_image);
 
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.drawable_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed(); // This will simulate the back button press
+            }
+        });
 
         context =this;
 
@@ -105,7 +107,7 @@ public class BigImageActivity extends AppCompatActivity {
 
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList, imagePath);
+        ImagePager_Adapter adapter = new ImagePager_Adapter(context, photoList, imagePath);
         viewPager.setAdapter(adapter);
         for (int i = 0; i < photoList.size(); i++) {
             if (photoList.get(i).getfilePath().equals(imagePath)) {
