@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/search_byName"
+        android:title="Tìm kiếm theo tên"/>
+    <item
+        android:id="@+id/search_byDate"
+        android:title="Tìm kiếm theo ngày"/>
+</menu>

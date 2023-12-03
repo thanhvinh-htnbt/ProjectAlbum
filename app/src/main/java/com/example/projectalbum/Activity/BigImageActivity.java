@@ -66,8 +66,7 @@ public class BigImageActivity extends AppCompatActivity {
 
     DescriptionFragment descriptionFragment;
 
-    String imagePath;
-    String imageDate;
+    String imagePath, imageDate, imageName;
     Long imageSize;
     private int currentItem;
     private static final String TAG = "MyApp";
@@ -78,13 +77,14 @@ public class BigImageActivity extends AppCompatActivity {
 
     BitmapFactory.Options options;
     Bitmap bitmap;
+    Toolbar toolbar;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solo_image);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -99,7 +99,14 @@ public class BigImageActivity extends AppCompatActivity {
         imagePath = getIntent().getStringExtra("imagePath");
         imageDate = getIntent().getStringExtra("imageDate");
         imageSize = getIntent().getLongExtra("imageSize",0);
+
         imageDescription[0] = getIntent().getStringExtra("imageDescription");
+        imageName = getIntent().getStringExtra("imageName");
+
+        toolbar.setTitle(imageName);
+
+
+
 
 
 
@@ -155,7 +162,6 @@ public class BigImageActivity extends AppCompatActivity {
         height = options.outHeight;
 
 
-        // set caption-and-large picture
         //truyền ảnh vào
         //Glide.with(context).load(imagePath).into(imgSoloPhoto);
 
@@ -268,6 +274,9 @@ public class BigImageActivity extends AppCompatActivity {
         bitmap = BitmapFactory.decodeFile(imagePath, options);
         width = options.outWidth;
         height = options.outHeight;
+        imageName = getIntent().getStringExtra("imageName");
+
+        toolbar.setTitle(imageName);
     }
 
 

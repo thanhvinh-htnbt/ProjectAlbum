@@ -138,7 +138,7 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
     }
 
     private void showInputCreateNewAlbum() {
-        //yêu ầu quyền ghi
+        //yêu cầu quyền ghi
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Quyền chưa được cấp, yêu cầu quyền.

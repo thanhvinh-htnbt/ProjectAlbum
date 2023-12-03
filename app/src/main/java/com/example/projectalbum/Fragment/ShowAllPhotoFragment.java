@@ -2,6 +2,7 @@ package com.example.projectalbum.Fragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,8 +22,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.projectalbum.Activity.MainActivity;
+import com.example.projectalbum.Activity.SeachImageActivity;
 import com.example.projectalbum.Adapter.Category_Adapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Photo;
@@ -39,7 +43,7 @@ public class ShowAllPhotoFragment extends Fragment {
 
     MainActivity main;
     Context context = null;
-//    Button btn_album;
+    Toolbar toolbar_allphoto;
 
     LinearLayout  layout_show_all_photo;
     TextView txtSoloMsg;
@@ -61,10 +65,6 @@ public class ShowAllPhotoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
 
         try {
             context = getActivity();
@@ -94,6 +94,8 @@ public class ShowAllPhotoFragment extends Fragment {
         }
 
         layout_show_all_photo = (LinearLayout) inflater.inflate(R.layout.fragment_show_all_photo, container, false);
+
+        SetupToolBar();
 
         //Kiểm tra quyền truy cập bộ nhớ
         if(ContextCompat.checkSelfPermission(main,
@@ -145,6 +147,22 @@ public class ShowAllPhotoFragment extends Fragment {
         }
     }
 
-
+        private void SetupToolBar() {
+        toolbar_allphoto = layout_show_all_photo.findViewById(R.id.toolbar_allPhoto);
+        toolbar_allphoto.inflateMenu(R.menu.top_photo_menu);
+        toolbar_allphoto.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id){
+                    case R.id.searchPhoto:
+                        Intent intent = new Intent(context, SeachImageActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
+    }
 
 }

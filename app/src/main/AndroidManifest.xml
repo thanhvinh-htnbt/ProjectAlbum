@@ -27,7 +27,9 @@
             android:name=".Activity.BigImageActivity"
             android:exported="false"
             android:parentActivityName=".Activity.MainActivity"/>
-
+        <activity
+            android:name=".Activity.SeachImageActivity"
+            android:exported="false" />
 
         <activity
             android:name=".Activity.ListAlbumActivity"
@@ -48,7 +50,6 @@
             </intent-filter>
 
         </activity>
-
 
 <!--        <activity-->
 <!--            android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"/>-->
