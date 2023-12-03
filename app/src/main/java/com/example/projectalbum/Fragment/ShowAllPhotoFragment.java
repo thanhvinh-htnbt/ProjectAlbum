@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -134,13 +135,13 @@ public class ShowAllPhotoFragment extends Fragment {
         }
 
 
-        ibtn_camera = (ImageButton) layout_show_all_photo.findViewById(R.id.ibtn_camera);
-        ibtn_camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takenImg();
-            }
-        });
+//        ibtn_camera = (ImageButton) layout_show_all_photo.findViewById(R.id.ibtn_camera);
+//        ibtn_camera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                takenImg();
+//            }
+//        });
 
 
         return layout_show_all_photo;

@@ -58,7 +58,7 @@ public class Image_Select_Adapter extends BaseAdapter {
         }
 
         // Load image from file path
-        String filePath = photos.get(position).getfilePath();
+        String filePath = photos.get(position).getFilePath();
         //truyền ảnh vào ImageView
         Glide.with(context).load(filePath).into(imageView);
         // You need to replace this with your own image loading logic

@@ -102,14 +102,14 @@ public class DB {
             // Duyệt qua danh sách các ảnh
             for (Photo image : images) {
                 // Kiểm tra xem hình ảnh có tồn tại không
-                File imageFile = new File(image.getfilePath());
+                File imageFile = new File(image.getFilePath());
                 if (imageFile.exists()) {
                     // Sao chép hình ảnh vào thư mục album
                     File newImageFile = new File(albumDir, imageFile.getName());
                     try {
                         Files.copy(imageFile.toPath(), newImageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
-                        Log.e("CreateNewAlbum", "Failed to copy image file: " + image.getfilePath(), e);
+                        Log.e("CreateNewAlbum", "Failed to copy image file: " + image.getFilePath(), e);
                     }
                     // Tạo một đối tượng ContentValues để đóng gói các thông tin về ảnh
                     ContentValues imageValues = new ContentValues();
@@ -149,7 +149,7 @@ public class DB {
                         cursor.close();
                     }
                 } else {
-                    Log.e("CreateNewAlbum", "Image file does not exist: " + image.getfilePath());
+                    Log.e("CreateNewAlbum", "Image file does not exist: " + image.getFilePath());
                 }
             }
         }
@@ -171,14 +171,14 @@ public class DB {
             // Duyệt qua danh sách các ảnh
             for (Photo image : images) {
                 // Kiểm tra xem hình ảnh có tồn tại không
-                File imageFile = new File(image.getfilePath());
+                File imageFile = new File(image.getFilePath());
                 if (imageFile.exists()) {
                     // Sao chép hình ảnh vào thư mục album
                     File newImageFile = new File(albumDir, imageFile.getName());
                     try {
                         Files.copy(imageFile.toPath(), newImageFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
-                        Log.e("CreateNewAlbum", "Failed to copy image file: " + image.getfilePath(), e);
+                        Log.e("CreateNewAlbum", "Failed to copy image file: " + image.getFilePath(), e);
                     }
                     // Tạo một đối tượng ContentValues để đóng gói các thông tin về ảnh
                     ContentValues imageValues = new ContentValues();
@@ -218,7 +218,7 @@ public class DB {
                         cursor.close();
                     }
                 } else {
-                    Log.e("CreateNewAlbum", "Image file does not exist: " + image.getfilePath());
+                    Log.e("CreateNewAlbum", "Image file does not exist: " + image.getFilePath());
                 }
             }
         }
@@ -256,7 +256,7 @@ public class DB {
         // Tìm URI của hình ảnh trong MediaStore
         String[] projection = { MediaStore.Images.Media._ID };
         String selection = MediaStore.Images.Media.DATA + "=?";
-        String[] selectionArgs = new String[] { image.getfilePath() };
+        String[] selectionArgs = new String[] { image.getFilePath() };
 
         Cursor cursor = context.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -272,7 +272,7 @@ public class DB {
             long id = cursor.getLong(idColumn);
             imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
         } else {
-            Log.e("DeleteImage", "Failed to find URI for image: " + image.getfilePath());
+            Log.e("DeleteImage", "Failed to find URI for image: " + image.getFilePath());
         }
 
         if (cursor != null) {
@@ -289,9 +289,9 @@ public class DB {
             try {
                 int rowsDeleted = context.getContentResolver().delete(imageUri, null, null);
                 if (rowsDeleted > 0) {
-                    Log.i("DeleteImage", "Deleted image: " + image.getfilePath());
+                    Log.i("DeleteImage", "Deleted image: " + image.getFilePath());
                 } else {
-                    Log.e("DeleteImage", "Failed to delete image: " + image.getfilePath());
+                    Log.e("DeleteImage", "Failed to delete image: " + image.getFilePath());
                 }
             } catch (RecoverableSecurityException e) {
                 PendingIntent pendingIntent = e.getUserAction().getActionIntent();
@@ -319,7 +319,7 @@ public class DB {
                 }, 1000);  // Thời gian chờ là 1000ms (1 giây)
             }
         } else {
-            Log.e("DeleteImage", "Failed to find URI for image: " + image.getfilePath());
+            Log.e("DeleteImage", "Failed to find URI for image: " + image.getFilePath());
         }
     }
     public static void deletePhotos(Context context, List<Photo> images)
