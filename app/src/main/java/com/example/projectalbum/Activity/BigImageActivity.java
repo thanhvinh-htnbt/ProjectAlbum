@@ -16,6 +16,7 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,14 +37,15 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.projectalbum.Adapter.ImagePager_Adapter;
-import com.example.projectalbum.Fragment.DescriptionFragment;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,7 +60,7 @@ public class BigImageActivity extends AppCompatActivity {
     List<Photo> photoList = new ArrayList<>();
 
 
-    DescriptionFragment descriptionFragment;
+
 
     String imagePath, imageDate, imageName;
     Long imageSize;
@@ -120,7 +122,7 @@ public class BigImageActivity extends AppCompatActivity {
         ImagePager_Adapter adapter = new ImagePager_Adapter(context, photoList, imagePath);
         viewPager.setAdapter(adapter);
         for (int i = 0; i < photoList.size(); i++) {
-            if (photoList.get(i).getfilePath().equals(imagePath)) {
+            if (photoList.get(i).getFilePath().equals(imagePath)) {
                 currentItem=i;
                 adapter.setSelectedIndex(i);
                 break;
@@ -260,9 +262,7 @@ public class BigImageActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.description_pic:
-                        descriptionFragment=new DescriptionFragment();
-                        descriptionFragment.setArguments(des);
-                        descriptionFragment.show(getSupportFragmentManager(), "dialog");
+                        showDescriptionDialog();
                         return true;
                 }
                 return false;
@@ -274,7 +274,7 @@ public class BigImageActivity extends AppCompatActivity {
 
     private void updateToolbarWithImageInfo(Photo imageModel) {
 
-        imagePath=imageModel.getfilePath();
+        imagePath=imageModel.getFilePath();
         imageDate=imageModel.getDateTaken();
         imageSize=imageModel.getSize();
         imageDescription[0]=imageModel.getDescription();
@@ -288,25 +288,43 @@ public class BigImageActivity extends AppCompatActivity {
 
 
 
-    private Dialog createDescriptionDialog() {
+    public void showDescriptionDialog() {
 
         LayoutInflater inflater = LayoutInflater.from(this);
-
         View dialogView = inflater.inflate(R.layout.dialog_description, null);
         Dialog desdialog = new Dialog(this);
         desdialog.setContentView(dialogView);
         desdialog.setCancelable(false);
-
-
+        TextView textView = (TextView) desdialog.findViewById(R.id.tv_description);
+        EditText editText = (EditText) desdialog.findViewById(R.id.et_newdes);
         Button buttonClose = dialogView.findViewById(R.id.btn_close_des);
         Button buttonAdd = dialogView.findViewById(R.id.btn_add_des);
+        textView.setText(imageDescription[0]);
+        buttonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Đóng dialog
+                imageDescription[0]=textView.getText().toString();
+                File file = new File(imagePath);
+                Uri imageUri = getImageContentUri(file);
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DESCRIPTION, textView.getText().toString());
+                getContentResolver().update(imageUri, values, null, null);
+                desdialog.dismiss();
+            }
+        });
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newdes = editText.getText().toString();
+                editText.setText("");
+                String olddes = textView.getText().toString();
+                textView.setText(olddes+"\n"+newdes);
+            }
+        });
+        desdialog.show();
 
-        //buttonClose.setOnClickListener();
-
-
-
-        return desdialog;
-        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

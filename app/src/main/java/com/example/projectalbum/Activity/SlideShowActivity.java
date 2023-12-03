@@ -93,7 +93,7 @@ public class SlideShowActivity extends AppCompatActivity {
 
 
                     // Nhận giá trị kiểu string từ Intent trước
-                    String imagePath = photoList.get(index[0]).getfilePath();
+                    String imagePath = photoList.get(index[0]).getFilePath();
                     // set caption-and-large picture
                     txtSoloMsg.setText(" Position= " + 1);
                     //truyền ảnh vào
