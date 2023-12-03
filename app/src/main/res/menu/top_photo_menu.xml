@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_search"
         android:title="search"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/gridSetting"
+        android:icon="@drawable/ic_4grid"
+        android:title="grid"
+        app:showAsAction="ifRoom"/>
 </menu>

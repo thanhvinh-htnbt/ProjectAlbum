@@ -45,7 +45,10 @@ import android.widget.Toast;
 
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
+
 import com.example.projectalbum.Adapter.ImagePagerAdapter;
+
+import com.example.projectalbum.Adapter.ImagePager_Adapter;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -58,9 +61,11 @@ import java.util.List;
 public class BigImageActivity extends AppCompatActivity {
     Context context = null;
 
+
     ImageView imgSoloPhoto;
+
     List<Photo> photoList = new ArrayList<>();
-    Bundle myOriginalMemoryBundle;
+
 
 
 
@@ -82,9 +87,23 @@ public class BigImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solo_image);
 
+
         toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        toolbar.setNavigationIcon(R.drawable.drawable_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                onBackPressed(); // This will simulate the back button press
+            }
+        });
+
+
+
+
+
 
         context =this;
 
@@ -102,8 +121,12 @@ public class BigImageActivity extends AppCompatActivity {
         toolbar.setTitle(imageName);
 
 
+        final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
+
+
+
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ImagePagerAdapter adapter = new ImagePagerAdapter(context, photoList, imagePath);
+        ImagePager_Adapter adapter = new ImagePager_Adapter(context, photoList, imagePath);
         viewPager.setAdapter(adapter);
         for (int i = 0; i < photoList.size(); i++) {
             if (photoList.get(i).getfilePath().equals(imagePath)) {
