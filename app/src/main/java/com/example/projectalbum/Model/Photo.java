@@ -1,8 +1,13 @@
 package com.example.projectalbum.Model;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class Photo {
@@ -82,7 +87,6 @@ public class Photo {
         }
         return datelong;
     }
-    // Sắp xếp theo ngày tăng dần
 
 
     // Sắp xếp theo tên tăng dần
