@@ -291,6 +291,7 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         builder.show();
     }
 
+    /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -308,4 +309,6 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
             }
         }
     }
+
+     */
 }
