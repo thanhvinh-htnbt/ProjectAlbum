@@ -71,6 +71,20 @@ public class Photo {
         this.Description = Description;
     }
 
+    public long getDateTaken2() {
+        long datelong = 0;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date date = formatter.parse(dateTaken);
+            datelong = date.getTime();
+        } catch (ParseException e) {
+            Log.e("DateConversion", "Failed to parse date: " + dateTaken, e);
+        }
+        return datelong;
+    }
+    // Sắp xếp theo ngày tăng dần
+
+
     // Sắp xếp theo tên tăng dần
     public static void sortByNameAscending(List<Photo> photoList) {
         Collections.sort(photoList, new Comparator<Photo>() {

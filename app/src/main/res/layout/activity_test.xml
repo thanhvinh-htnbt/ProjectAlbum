@@ -31,5 +31,6 @@
         android:text="Slide show"
         app:layout_constraintStart_toEndOf="@+id/btn_testAlbum"
         app:layout_constraintTop_toTopOf="parent" />
+    
 
 </androidx.constraintlayout.widget.ConstraintLayout>

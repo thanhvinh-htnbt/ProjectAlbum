@@ -12,6 +12,11 @@
         android:title="Slide show all photo"
         app:showAsAction="always"/>
     <item
+        android:id="@+id/mn_camera"
+        android:icon="@drawable/ic_camera"
+        android:title="Chụp ảnh"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/gridSetting"
         android:icon="@drawable/ic_4grid"
         android:title="grid"

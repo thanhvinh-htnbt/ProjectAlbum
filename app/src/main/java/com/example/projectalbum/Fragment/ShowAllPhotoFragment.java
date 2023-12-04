@@ -1,24 +1,40 @@
 package com.example.projectalbum.Fragment;
 
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -32,12 +48,20 @@ import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class ShowAllPhotoFragment extends Fragment {
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int CAMERA_REQUEST = 1888;
+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+    private static final int PICTURE_RESULT = 1;
     MainActivity main;
     Context context = null;
     Toolbar toolbar_allphoto;
@@ -46,9 +70,13 @@ public class ShowAllPhotoFragment extends Fragment {
     Photo_Adapter photoAdapter;
 
     LinearLayout  layout_show_all_photo;
+    TextView txtSoloMsg;
+    ImageButton ibtn_camera;
+    ImageView imgSoloPhoto;
+    Button btnSoloBack, btnDelete, btnShare;
+    Bundle myOriginalMemoryBundle;
     List<Photo>photoList = new ArrayList<>();
     List<Category> categoryList;
-
     int flagLayout, column;
 
 
@@ -107,6 +135,15 @@ public class ShowAllPhotoFragment extends Fragment {
         }
 
 
+//        ibtn_camera = (ImageButton) layout_show_all_photo.findViewById(R.id.ibtn_camera);
+//        ibtn_camera.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                takenImg();
+//            }
+//        });
+
+
         return layout_show_all_photo;
     }
     private void loadImageCategoryList(LinearLayout layout) {
@@ -138,6 +175,7 @@ public class ShowAllPhotoFragment extends Fragment {
         recyclerView.setAdapter(photoAdapter);
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults)
@@ -149,6 +187,7 @@ public class ShowAllPhotoFragment extends Fragment {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(context,"Read external permission granted", Toast.LENGTH_SHORT).show();
                 loadImageCategoryList(layout_show_all_photo);
+                categoryAdapter.setData(DB.getListCategory(main));
             }
             else
             {
@@ -156,6 +195,7 @@ public class ShowAllPhotoFragment extends Fragment {
             }
         }
     }
+
 
         private void SetupToolBar() {
         toolbar_allphoto = layout_show_all_photo.findViewById(R.id.toolbar_allPhoto);
@@ -173,6 +213,10 @@ public class ShowAllPhotoFragment extends Fragment {
                     case R.id.slideShow:
                         Intent slideshow = new Intent(context, SlideShowActivity.class);
                         startActivity(slideshow);
+                        break;
+                    case R.id.mn_camera:
+//                        Toast.makeText(context, "TakeImage", Toast.LENGTH_SHORT).show();
+                        takenImg();
                         break;
 
                     case R.id.gridSetting:
@@ -215,6 +259,27 @@ public class ShowAllPhotoFragment extends Fragment {
                 return true;
             }
         });
+    }
+    private Uri imageUri;
+    private void takenImg() {
+//        Toast.makeText(context, "TakeImage", Toast.LENGTH_SHORT).show();
+        int permissionCheckStorage = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA);
+        if (permissionCheckStorage != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA},MY_CAMERA_PERMISSION_CODE );
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+            values.put(MediaStore.Images.Media.BUCKET_DISPLAY_NAME, "Camera");
+            imageUri = getActivity().getApplicationContext().getContentResolver().insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, PICTURE_RESULT);
+
+            categoryAdapter.setData(DB.getListCategory(main));
+        }
     }
 
 }

@@ -34,7 +34,7 @@ public class Album_Adapter extends RecyclerView.Adapter<Album_Adapter.AlbumViewH
     public void setData(List<Album> listAlbum)
     {
         this.listAlbum = listAlbum;
-//        notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     //

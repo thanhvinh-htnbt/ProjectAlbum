@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.projectalbum.Fragment.ListAlbumFragment;
@@ -19,6 +20,7 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity implements MainActivityListener {
 
     BottomNavigationView bottomNavigationView;
+    ImageButton ibtn_camera;
 
     Fragment selectedFragment = null;
 
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new ShowAllPhotoFragment()).commit();
+
     }
 
 
