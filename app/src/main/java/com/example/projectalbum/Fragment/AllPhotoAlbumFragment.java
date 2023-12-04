@@ -2,7 +2,6 @@ package com.example.projectalbum.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -21,11 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.example.projectalbum.Adapter.Category_Adapter;
 import com.example.projectalbum.Database.DB;
-import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class AllPhotoAlbumFragment extends Fragment {
 

@@ -20,20 +20,22 @@
         <Button android:id="@+id/btnBack_SlideShow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_weight="1"
-
+            android:background="@drawable/custom_button1"
             android:text="Back" />
         <Button android:id="@+id/btnStop_SlideShow"
-            android:layout_width="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Stop" />
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button1"
+        android:layout_weight="1"
+        android:text="Stop" />
         <Button android:id="@+id/btnContinue_SlideShow"
             android:layout_width="wrap_content"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_button1"
             android:layout_weight="1"
             android:text="Continue" />
     </LinearLayout>

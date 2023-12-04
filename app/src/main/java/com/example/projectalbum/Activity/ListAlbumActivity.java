@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -29,7 +27,6 @@ import com.example.projectalbum.Model.Album;
 import com.example.projectalbum.R;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListAlbumActivity extends AppCompatActivity  implements AdapterListener, PopupMenu.OnMenuItemClickListener {
@@ -40,8 +37,6 @@ public class ListAlbumActivity extends AppCompatActivity  implements AdapterList
     private List<Album> listAlbum;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
-    //    private ImageButton imgb_popup;
-//    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

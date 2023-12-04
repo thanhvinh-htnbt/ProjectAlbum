@@ -1,7 +1,5 @@
 package com.example.projectalbum.Adapter;
 
-
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -23,9 +21,7 @@ import java.util.List;
 public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.CategoryViewHolder>{
     private Context context;
     private List<Category> listCategory;
-
     private int column;
-
 
     public Category_Adapter(Context context) {
         this.context = context;

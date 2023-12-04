@@ -71,9 +71,6 @@ public class Photo {
         this.Description = Description;
     }
 
-    // Sắp xếp theo ngày tăng dần
-
-
     // Sắp xếp theo tên tăng dần
     public static void sortByNameAscending(List<Photo> photoList) {
         Collections.sort(photoList, new Comparator<Photo>() {

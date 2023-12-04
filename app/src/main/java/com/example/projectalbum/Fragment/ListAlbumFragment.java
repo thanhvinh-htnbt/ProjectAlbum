@@ -12,10 +12,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -27,9 +25,6 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.example.projectalbum.Activity.ListAlbumActivity;
-import com.example.projectalbum.Activity.MainActivity;
-import com.example.projectalbum.Activity.PhotoAlbumActivity;
 import com.example.projectalbum.Adapter.Album_Adapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Interface.AdapterListener;
@@ -58,7 +53,6 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
     }
     public static ListAlbumFragment newInstance(Context context) {
         ListAlbumFragment fragment = new ListAlbumFragment(context);
-//        setListener((MainActivityListener) context);
         fragment.setListener((MainActivityListener) context);
         fragment.context = context;
         return fragment;
@@ -102,22 +96,6 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         return albumList;
     }
 
-
-//    @Override
-//    public void onBackPressed() {
-//        if (isShowCheck) {
-//            // Thoát khỏi trạng thái dấu tích
-//            isShowCheck = false;
-//            for (Album album : listAlbum) {
-//                album.IsSelected = false;
-//                this.albumAdapter.setIsShowCheck(false);
-//            }
-//            // Cập nhật giao diện
-//            albumAdapter.notifyDataSetChanged();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
     private void onPress()
     {
         // Thiết lập hành động cho nút Back

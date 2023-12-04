@@ -43,14 +43,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.google.android.material:material:1.6.1")
 
-
-
-//    implementation ("com.squareup.picasso:picasso:2.71828")
     implementation (files("libs/ds-photo-editor-sdk.aar"))
-//
-//    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
-//    implementation("com.dsphotoeditor:ds-photo-editor-sdk:10")
-//    implementation ("com.dsphotoeditor:dsphotoeditor:1.0.0")
 
     implementation ("com.github.bumptech.glide:glide:4.14.2")
 

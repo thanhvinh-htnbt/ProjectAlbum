@@ -31,9 +31,7 @@ public class PhotoAlbumActivity extends AppCompatActivity {
         this.popup_menu = (ImageButton) findViewById(R.id.popup_menu);
 
         this.tv_name_album.setText(name);
-//        Toast.makeText(this, "debug", Toast.LENGTH_SHORT).show();
 
-//        this.show_photo_album_fragment = show_all_photo_fragment.newInstance(id);
         this.show_photo_album_fragment = AllPhotoAlbumFragment.newInstance(this,id);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_photo_album, this.show_photo_album_fragment)

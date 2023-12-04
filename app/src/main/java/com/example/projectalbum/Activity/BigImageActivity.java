@@ -283,6 +283,7 @@ public class BigImageActivity extends AppCompatActivity {
         Dialog desdialog = new Dialog(this);
         desdialog.setContentView(dialogView);
         desdialog.setCancelable(false);
+
         TextView textView = (TextView) desdialog.findViewById(R.id.tv_description);
         EditText editText = (EditText) desdialog.findViewById(R.id.et_newdes);
         Button buttonClose = dialogView.findViewById(R.id.btn_close_des);
@@ -433,35 +434,6 @@ public class BigImageActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return uri;
-    }
-
-    public void deleteMediaFile(Uri uri){
-        try {
-            getContentResolver().delete(uri, null,null);
-        } catch (SecurityException e){
-            PendingIntent pendingIntent = null;
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-                ArrayList<Uri> uris = new ArrayList<>();
-                uris.add(uri);
-                pendingIntent = MediaStore.createDeleteRequest(getContentResolver(),uris);
-            } else {
-                if (e instanceof RecoverableSecurityException){
-                    RecoverableSecurityException exception = (RecoverableSecurityException) e;
-                    pendingIntent = exception.getUserAction().getActionIntent();
-                }
-            }
-
-            if(pendingIntent != null){
-                IntentSender intentSender = pendingIntent.getIntentSender();
-                try {
-                    startIntentSenderForResult(intentSender,100,null,0,0,0);
-                } catch (IntentSender.SendIntentException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-
-
     }
 
 

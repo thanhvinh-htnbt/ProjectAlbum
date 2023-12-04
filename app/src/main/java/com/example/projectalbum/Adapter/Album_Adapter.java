@@ -59,11 +59,7 @@ public class Album_Adapter extends RecyclerView.Adapter<Album_Adapter.AlbumViewH
         {
             return;
         }
-//    //////sai
-//        Picasso.get()
-//                .load(album.getImageUrl())
-//                .into(holder.imgv_album);
-//        holder.imgv_album.setImageResource(album.getImgResource());
+
         try {
             Glide.with(context).load(album.getImgResource()).into(holder.imgv_album);
         }catch (Exception e)
@@ -74,27 +70,6 @@ public class Album_Adapter extends RecyclerView.Adapter<Album_Adapter.AlbumViewH
         holder.tv_album.setText(album.getName());
         holder.cv_item.setBackgroundResource(R.drawable.custom_item_album);
         holder.img_check.setBackgroundResource(0);
-//
-//        if(this.isShowCheck)
-//        {
-//            if(album.IsSelected)
-//            {
-//                Toast.makeText(context, "set background resource", Toast.LENGTH_SHORT).show();
-//                holder.cv_item.setBackgroundResource(R.drawable.custom_item_album_selected);
-//                holder.img_check.setBackgroundResource(R.drawable.drawable_checked);
-//            }
-//            else {
-//                Toast.makeText(context, "set background resource1", Toast.LENGTH_SHORT).show();
-//                holder.cv_item.setBackgroundResource(R.drawable.custom_item_album);
-//                holder.img_check.setBackgroundResource(R.drawable.drawable_unchecked);
-//            }
-//        }
-//        else{
-//            Toast.makeText(context, "set background resource2", Toast.LENGTH_SHORT).show();
-//            holder.cv_item.setBackgroundResource(R.drawable.custom_item_album);
-//            holder.img_check.setBackgroundResource(0);
-//        }
-
 
         holder.cv_item.setOnClickListener(new View.OnClickListener() {
             @Override
