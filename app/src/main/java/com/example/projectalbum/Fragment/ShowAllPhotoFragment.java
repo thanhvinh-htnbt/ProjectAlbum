@@ -1,40 +1,29 @@
 package com.example.projectalbum.Fragment;
 
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -48,11 +37,7 @@ import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -70,11 +55,6 @@ public class ShowAllPhotoFragment extends Fragment {
     Photo_Adapter photoAdapter;
 
     LinearLayout  layout_show_all_photo;
-    TextView txtSoloMsg;
-    ImageButton ibtn_camera;
-    ImageView imgSoloPhoto;
-    Button btnSoloBack, btnDelete, btnShare;
-    Bundle myOriginalMemoryBundle;
     List<Photo>photoList = new ArrayList<>();
     List<Category> categoryList;
     int flagLayout, column;
@@ -134,14 +114,6 @@ public class ShowAllPhotoFragment extends Fragment {
             loadImageCategoryList(layout_show_all_photo);
         }
 
-
-//        ibtn_camera = (ImageButton) layout_show_all_photo.findViewById(R.id.ibtn_camera);
-//        ibtn_camera.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                takenImg();
-//            }
-//        });
 
 
         return layout_show_all_photo;

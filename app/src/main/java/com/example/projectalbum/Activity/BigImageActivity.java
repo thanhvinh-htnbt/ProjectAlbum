@@ -31,14 +31,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,9 +60,9 @@ public class BigImageActivity extends AppCompatActivity {
 
     String imagePath, imageDate, imageName;
     Long imageSize;
-    private int currentItem=0;
+    private int currentItem = 0;
     private static final String TAG = "MyApp";
-    final String[] imageDescription={""};
+    final String[] imageDescription = {""};
 
     int width;
     int height;
@@ -72,6 +71,7 @@ public class BigImageActivity extends AppCompatActivity {
     Bitmap bitmap;
     Toolbar toolbar;
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,19 +91,14 @@ public class BigImageActivity extends AppCompatActivity {
         });
 
 
+        context = this;
 
-
-
-
-        context =this;
-
-        photoList=getListPhoto(context);
-        //imgSoloPhoto = (ImageView) findViewById(R.id.imgSolo);
+        photoList = getListPhoto(context);
 
         // Nhận giá trị kiểu string từ Intent trước
         imagePath = getIntent().getStringExtra("imagePath");
         imageDate = getIntent().getStringExtra("imageDate");
-        imageSize = getIntent().getLongExtra("imageSize",0);
+        imageSize = getIntent().getLongExtra("imageSize", 0);
 
         imageDescription[0] = getIntent().getStringExtra("imageDescription");
         imageName = getIntent().getStringExtra("imageName");
@@ -113,35 +108,24 @@ public class BigImageActivity extends AppCompatActivity {
 
         final String[] imageDescription = {getIntent().getStringExtra("imageDescription")};
 
-
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ImagePager_Adapter adapter = new ImagePager_Adapter(context, photoList, imagePath);
+        ViewPager2 viewPager = (ViewPager2) findViewById(R.id.viewPager);
+        ImagePager_Adapter adapter = new ImagePager_Adapter(context, photoList);
         viewPager.setAdapter(adapter);
         for (int i = 0; i < photoList.size(); i++) {
             if (photoList.get(i).getFilePath().equals(imagePath)) {
-                currentItem=i;
-                adapter.setSelectedIndex(i);
+                currentItem = i;
+                viewPager.setCurrentItem(i, false);
                 break;
             }
         }
 
 
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                // Cập nhật currentItem và thanh công cụ với thông tin từ ImageModel hiện tại
-                //currentItem = position;
-                updateToolbarWithImageInfo(photoList.get(currentItem+position));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                super.onPageSelected(position);
+                currentItem = position;
+                updateToolbarWithImageInfo(photoList.get(position));
             }
         });
 
@@ -150,23 +134,22 @@ public class BigImageActivity extends AppCompatActivity {
         updateToolbarWithImageInfo(photoList.get(currentItem));
 
 
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
         width = options.outWidth;
         height = options.outHeight;
 
 
-        AlertDialog.Builder detailDialog= new AlertDialog.Builder(BigImageActivity.this);
-        Bundle des=new Bundle();
-        des.putString("description",imageDescription[0]);
+        AlertDialog.Builder detailDialog = new AlertDialog.Builder(BigImageActivity.this);
+        Bundle des = new Bundle();
+        des.putString("description", imageDescription[0]);
 
 
-        BottomNavigationView navigation_picture=(BottomNavigationView)findViewById(R.id.bottomPictureNavigationView);
+        BottomNavigationView navigation_picture = (BottomNavigationView) findViewById(R.id.bottomPictureNavigationView);
         navigation_picture.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.share_pic:
                         shareImageAndText(bitmap);
                         return true;
@@ -188,19 +171,17 @@ public class BigImageActivity extends AppCompatActivity {
                         return true;
                     case R.id.detail_pic:
                         detailDialog.setTitle("Chi tiết");
-                        String sizeunit=" bytes";
-                        Long size=imageSize;
-                        if(size>1024)
-                        {
-                            size=size/1024;
-                            sizeunit=" KB";
+                        String sizeunit = " bytes";
+                        Long size = imageSize;
+                        if (size > 1024) {
+                            size = size / 1024;
+                            sizeunit = " KB";
                         }
-                        if(size>1024)
-                        {
-                            size=size/1024;
-                            sizeunit=" MB";
+                        if (size > 1024) {
+                            size = size / 1024;
+                            sizeunit = " MB";
                         }
-                        detailDialog.setMessage("Dung lượng: "+size + sizeunit+"\n"+"Kích thước: " + width + " x " + height+"\n"+"Ngày tạo: "+imageDate+"\n"+"Đường dẫn: "+imagePath);
+                        detailDialog.setMessage("Dung lượng: " + size + sizeunit + "\n" + "Kích thước: " + width + " x " + height + "\n" + "Ngày tạo: " + imageDate + "\n" + "Đường dẫn: " + imagePath);
                         detailDialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -262,10 +243,10 @@ public class BigImageActivity extends AppCompatActivity {
 
     private void updateToolbarWithImageInfo(Photo imageModel) {
 
-        imagePath=imageModel.getFilePath();
-        imageDate=imageModel.getDateTaken();
-        imageSize=imageModel.getSize();
-        imageDescription[0]=imageModel.getDescription();
+        imagePath = imageModel.getFilePath();
+        imageDate = imageModel.getDateTaken();
+        imageSize = imageModel.getSize();
+        imageDescription[0] = imageModel.getDescription();
         options = new BitmapFactory.Options();
         bitmap = BitmapFactory.decodeFile(imagePath, options);
         width = options.outWidth;
@@ -273,7 +254,6 @@ public class BigImageActivity extends AppCompatActivity {
         imageName = imageModel.getName();
         toolbar.setTitle(imageName);
     }
-
 
 
     public void showDescriptionDialog() {
@@ -293,7 +273,7 @@ public class BigImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Đóng dialog
-                imageDescription[0]=textView.getText().toString();
+                imageDescription[0] = textView.getText().toString();
                 File file = new File(imagePath);
                 Uri imageUri = getImageContentUri(file);
                 ContentValues values = new ContentValues();
@@ -308,7 +288,7 @@ public class BigImageActivity extends AppCompatActivity {
                 String newdes = editText.getText().toString();
                 editText.setText("");
                 String olddes = textView.getText().toString();
-                textView.setText(olddes+"\n"+newdes);
+                textView.setText(olddes + "\n" + newdes);
             }
         });
         desdialog.show();
@@ -407,7 +387,6 @@ public class BigImageActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_STREAM, uri);
         intent.putExtra(Intent.EXTRA_TEXT, "Image Text");
-        intent.putExtra(Intent.EXTRA_STREAM, "Image Subject");
 
         intent.setType("image/*");
 
@@ -417,20 +396,20 @@ public class BigImageActivity extends AppCompatActivity {
 
     //Lấy ảnh để share
     private Uri getImageToShare(Bitmap bitmap) {
-        File folder = new File(getCacheDir(),"images");
+        File folder = new File(getCacheDir(), "images");
         Uri uri = null;
 
         try {
             folder.mkdirs();
-            File file = new File(folder,"image.jpg");
+            File file = new File(folder, "image.jpg");
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
 
             fileOutputStream.flush();
             fileOutputStream.close();
 
-            uri = FileProvider.getUriForFile(context,"com.example.projectalbum", file);
-        } catch (Exception e){
+            uri = FileProvider.getUriForFile(context, "com.example.projectalbum", file);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return uri;
