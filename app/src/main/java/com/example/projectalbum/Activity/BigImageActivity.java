@@ -48,11 +48,14 @@ import com.example.projectalbum.Adapter.ImagePager_Adapter;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class BigImageActivity extends AppCompatActivity {
     Context context = null;
@@ -191,6 +194,7 @@ public class BigImageActivity extends AppCompatActivity {
                         detailDialog.create().show();
                         return true;
                     case R.id.delete_pic:
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(BigImageActivity.this);
                         Uri targetUri = Uri.parse(imagePath);
                         builder.setTitle("Confirm");
@@ -312,8 +316,16 @@ public class BigImageActivity extends AppCompatActivity {
 
     //Xóa file
     private void deleteImage(String imagePath) {
+        //Firebase
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+
+        StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+
         File file = new File(imagePath);
         Uri contentUri = getImageContentUri(file);
+
+        ref.putFile(contentUri);
 
         if (contentUri != null) {
             // Kiểm tra mức độ API trước khi xóa
