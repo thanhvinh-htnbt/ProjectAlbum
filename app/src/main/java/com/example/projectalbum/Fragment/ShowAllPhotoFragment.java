@@ -5,12 +5,14 @@ package com.example.projectalbum.Fragment;
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
@@ -31,6 +34,7 @@ import com.example.projectalbum.Activity.MainActivity;
 import com.example.projectalbum.Activity.SeachImageActivity;
 import com.example.projectalbum.Activity.SlideShowActivity;
 import com.example.projectalbum.Adapter.Category_Adapter;
+import com.example.projectalbum.Adapter.Image_Select_Adapter;
 import com.example.projectalbum.Adapter.Photo_Adapter;
 import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Category;
@@ -58,7 +62,6 @@ public class ShowAllPhotoFragment extends Fragment {
     List<Photo>photoList = new ArrayList<>();
     List<Category> categoryList;
     int flagLayout, column;
-
 
 
     @Override
@@ -253,5 +256,7 @@ public class ShowAllPhotoFragment extends Fragment {
             categoryAdapter.setData(DB.getListCategory(main));
         }
     }
+
+
 
 }

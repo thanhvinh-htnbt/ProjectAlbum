@@ -11,6 +11,7 @@
         android:icon="@drawable/ic_restore"
         android:title="search"
         app:showAsAction="always"/>
+
     <item
         android:id="@+id/slideShow"
         android:icon="@drawable/ic_slideshow"
