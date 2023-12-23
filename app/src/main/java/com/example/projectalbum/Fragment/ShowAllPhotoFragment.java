@@ -80,6 +80,28 @@ public class ShowAllPhotoFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Bundle extras = main.getIntent().getExtras();
+
+        column = 4;
+        flagLayout = 1;
+        categoryList = DB.getListCategory(main);
+
+        if (extras != null) {
+            String value = extras.getString("id");
+            // Sử dụng giá trị nhận được
+            photoList = DB.getListPhotoOfIdAlbum(context,value);
+        }
+        else
+        {
+            photoList = DB.getListPhoto(context);
+        }
+    }
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

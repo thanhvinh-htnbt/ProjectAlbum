@@ -88,8 +88,10 @@ public class BigImageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //Intent main=new Intent(BigImageActivity.this,MainActivity.class);
+                //startActivity(main);
                 onBackPressed(); // This will simulate the back button press
+
             }
         });
 
@@ -171,6 +173,7 @@ public class BigImageActivity extends AppCompatActivity {
                         editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
 
                         startActivity(editIntent);
+
                         return true;
                     case R.id.detail_pic:
                         detailDialog.setTitle("Chi tiết");

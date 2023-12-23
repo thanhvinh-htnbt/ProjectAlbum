@@ -87,6 +87,7 @@ public class SlideShowActivity extends AppCompatActivity {
         });
 
 
+
     }
 
     private void showImageSelectionDialog(Context context) {
@@ -118,9 +119,6 @@ public class SlideShowActivity extends AppCompatActivity {
                 // Xử lý danh sách các hình ảnh đã được chọn ở đây
                 photoList=selectedImages;
 
-
-
-
                 AlertDialog.Builder settingDialog= new AlertDialog.Builder(SlideShowActivity.this);
                 settingDialog.setTitle("Cài đặt");
                 LayoutInflater inflater = getLayoutInflater();
@@ -147,6 +145,7 @@ public class SlideShowActivity extends AppCompatActivity {
                                 {
                                     if(index[0] ==photoList.size()-1)
                                     {
+                                        running[0] =!running[0];
                                         SlideShowActivity.this.finish();
                                     } else {
                                         index[0] = index[0] + 1;

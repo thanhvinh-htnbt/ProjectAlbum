@@ -58,6 +58,38 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setContentView(R.layout.activity_main);
+
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                switch (itemId){
+                    case R.id.nav_photo:
+                        selectedFragment = new ShowAllPhotoFragment();
+                        break;
+                    case R.id.nav_album:
+                        selectedFragment = ListAlbumFragment.newInstance(MainActivity.this);
+                        break;
+                }
+
+                if(selectedFragment != null){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+                }
+                return true;
+            }
+        });
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new ShowAllPhotoFragment()).commit();
+    }
 
     @Override
     public void onItemAlbumClick(String name, String id) {
