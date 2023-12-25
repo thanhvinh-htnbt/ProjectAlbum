@@ -2,14 +2,11 @@ package com.example.projectalbum.Fragment;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -17,8 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.os.Environment;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +34,7 @@ import com.example.projectalbum.Model.Album;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
-import java.io.File;
+
 import java.util.List;
 
 public class ListAlbumFragment extends Fragment implements AdapterListener, PopupMenu.OnMenuItemClickListener {

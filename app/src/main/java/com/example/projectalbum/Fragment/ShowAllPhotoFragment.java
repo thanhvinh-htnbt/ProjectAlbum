@@ -3,6 +3,7 @@ package com.example.projectalbum.Fragment;
 
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,15 +41,15 @@ import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 public class ShowAllPhotoFragment extends Fragment {
@@ -287,79 +288,99 @@ public class ShowAllPhotoFragment extends Fragment {
         }
     }
 
+
     private void showRestoreImageSelectionDialog(Context context) {
         // Tạo một AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
 
         // Đặt tiêu đề cho AlertDialog
-        builder.setTitle("Chọn hình ảnh");
+        builder.setTitle("Chọn hình ảnh phục hồi");
 
         // Khai báo thư viện Firebase Storage
         StorageReference mStorageRef;
 
-// Khởi tạo FirebaseStorage
+        // Khởi tạo FirebaseStorage
         mStorageRef = FirebaseStorage.getInstance().getReference().child("images");
 
-// Tạo một danh sách để lưu trữ các URL của ảnh
-        List imageUrls = new ArrayList<>();
-        List<Photo> lp=new ArrayList<>();
 
-// Lấy danh sách tất cả các tệp tin trong thư mục trên Firebase Storage
+        List<Photo> lp = new ArrayList<>();
+
+        // Tạo một danh sách để lưu trữ các đối tượng trong Firebase Storage
+        List<StorageReference> storageReferences = new ArrayList<>();
+
+        // Lấy danh sách tên của các đối tượng trong thư mục trên Firebase Storage
         mStorageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
-                for (StorageReference item : listResult.getItems()) {
-                    // Lấy URL của từng ảnh và thêm vào danh sách
-                    item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                // Lấy danh sách tất cả các đối tượng
+                List<StorageReference> items = listResult.getItems();
+
+                // Lưu trữ danh sách các đối tượng vào storageReferences
+                storageReferences.addAll(items);
+
+                // Tạo danh sách tác vụ lấy URL
+                List<Task<Uri>> tasks = new ArrayList<>();
+
+                // Lặp qua danh sách các đối tượng để tạo tác vụ lấy URL cho mỗi đối tượng
+                for (StorageReference item : items) {
+                    Task<Uri> urlTask = item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             String imageUrl = uri.toString();
                             //imageUrls.add(imageUrl);
-                            Photo p=new Photo();
+                            Photo p = new Photo();
                             p.setFilePath(imageUrl);
                             lp.add(p);
                         }
                     });
 
+                    // Thêm tác vụ vào danh sách
+                    tasks.add(urlTask);
                 }
+
+                // Khi tất cả các tác vụ lấy URL hoàn thành
+                Tasks.whenAllSuccess(tasks).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
+                    @Override
+                    public void onSuccess(List<Object> objects) {
+                        // Dữ liệu đã sẵn sàng, cập nhật GridView hoặc thực hiện các thao tác cần thiết
+                        Image_Select_Adapter imageAdapter = new Image_Select_Adapter(context, lp);
+                        GridView gridView = new GridView(context);
+                        gridView.setAdapter(imageAdapter);
+                        gridView.setNumColumns(3);
+
+                        builder.setView(gridView);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Xử lý sự kiện khi nút OK được nhấn
+                                // Bạn có thể lấy danh sách các hình ảnh đã được chọn từ ImageAdapter
+                                selectedImages = imageAdapter.getSelectedImages();
+                                // Xử lý danh sách các hình ảnh đã được chọn ở đây
+                                for(int i=0;i<selectedImages.size();i++)
+                                {
+                                    DownloadManager.Request request= new DownloadManager.Request(Uri.parse(selectedImages.get(i).getFilePath()));
+
+                                }
+
+
+                            }
+                        });
+
+                        // Đặt nút Cancel và xử lý sự kiện khi nút Cancel được nhấn
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        // Hiển thị AlertDialog
+                        builder.show();
+                    }
+                });
             }
         });
 
-
-        // Tạo một adapter để hiển thị danh sách hình ảnh
-        // Bạn cần thay đổi ImageAdapter để hỗ trợ việc đổi màu viền khi hình ảnh được chọn
-        Image_Select_Adapter imageAdapter = new Image_Select_Adapter(context, lp);
-        GridView gridView = new GridView(context);
-        gridView.setAdapter(imageAdapter);
-        gridView.setNumColumns(3);
-
-        builder.setView(gridView);
-
-        // Đặt nút OK và xử lý sự kiện khi nút OK được nhấn
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Xử lý sự kiện khi nút OK được nhấn
-                // Bạn có thể lấy danh sách các hình ảnh đã được chọn từ ImageAdapter
-                selectedImages = imageAdapter.getSelectedImages();
-                //DB.createNewAlbum(context,albumName,selectedImages);
-                //albumAdapter.setData(DB.getAlbums(context));
-                // Xử lý danh sách các hình ảnh đã được chọn ở đây
-            }
-        });
-
-        // Đặt nút Cancel và xử lý sự kiện khi nút Cancel được nhấn
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        // Hiển thị AlertDialog
-        builder.show();
     }
-
-
 
 }

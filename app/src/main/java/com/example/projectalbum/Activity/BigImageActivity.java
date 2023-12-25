@@ -87,8 +87,7 @@ public class BigImageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent main=new Intent(BigImageActivity.this,MainActivity.class);
-                //startActivity(main);
+
                 onBackPressed(); // This will simulate the back button press
 
             }
@@ -134,7 +133,6 @@ public class BigImageActivity extends AppCompatActivity {
         });
 
         // Khởi tạo currentItem và cập nhật thanh công cụ với thông tin từ ImageModel đầu tiên
-        //currentItem = 0;
         updateToolbarWithImageInfo(photoList.get(currentItem));
 
 

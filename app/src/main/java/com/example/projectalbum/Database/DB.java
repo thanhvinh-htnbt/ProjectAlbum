@@ -322,41 +322,7 @@ public class DB {
             Log.e("DeleteImage", "Failed to find URI for image: " + image.getFilePath());
         }
     }
-//    public static void deletePhotos(Context context, List<Photo> images)
-//    {
-//        List<Uri> urisToDelete = new ArrayList<>();
-//
-//        for (Photo image: images)
-//        {
-//            Uri imageUri = getImageUri(context, image);
-//            if (imageUri != null) {
-//                urisToDelete.add(imageUri);
-//            }
-//        }
-//
-//        if (!urisToDelete.isEmpty()) {
-//            PendingIntent pendingIntent = null;
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-//                pendingIntent = MediaStore.createDeleteRequest(context.getContentResolver(), urisToDelete);
-//            }
-//
-//            try {
-//                Activity activity = (Activity)context;
-//                activity.startIntentSenderForResult(
-//                        pendingIntent.getIntentSender(),
-//                        REQUEST_CODE_PERMISSION,
-//                        null,
-//                        0,
-//                        0,
-//                        0,
-//                        null
-//                );
-//            } catch (IntentSender.SendIntentException e) {
-//                Log.e("DeleteImage", "Failed to send intent: ", e);
-//            }
-//        }
-//        DB.deleteAllEmptyAlbums();
-//    }
+
     public static void deletePhotos(Context context, List<Photo> images) {
         List<Uri> urisToDelete = new ArrayList<>();
 

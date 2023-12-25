@@ -1,6 +1,6 @@
 package com.example.projectalbum.Activity;
 
-import static com.example.projectalbum.Database.DB.getListPhoto;
+
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -170,7 +170,6 @@ public class SlideShowActivity extends AppCompatActivity {
                                             .transition(GenericTransitionOptions)
                                             .into(imgSoloPhoto);
 
-
                                 }
 
                                 // Lặp lại sau mỗi 5 giây, đã sửa thành n giây để test
@@ -180,8 +179,6 @@ public class SlideShowActivity extends AppCompatActivity {
                         };
                         // Lặp lại sau mỗi n giây
                         handler.postDelayed(runnable, second[0] *1000);
-
-
 
                     }
                 });
@@ -195,6 +192,7 @@ public class SlideShowActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                finish();
             }
         });
 

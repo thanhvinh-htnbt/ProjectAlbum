@@ -24,7 +24,6 @@ public class Photo {
 
     public Photo(){}
 
-
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }

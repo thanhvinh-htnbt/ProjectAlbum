@@ -60,9 +60,7 @@ public class Image_Select_Adapter extends BaseAdapter {
         String filePath = photos.get(position).getFilePath();
         //truyền ảnh vào ImageView
         Glide.with(context).load(filePath).into(imageView);
-        // You need to replace this with your own image loading logic
-        // For example, you can use libraries like Picasso or Glide to load image from file path
-        // Picasso.get().load(new File(filePath)).into(imageView);
+
 
         // Set border color based on selection state
         if (selected.get(position)) {
