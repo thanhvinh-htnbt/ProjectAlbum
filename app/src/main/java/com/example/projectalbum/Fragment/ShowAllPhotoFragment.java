@@ -40,7 +40,10 @@ import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -65,6 +68,7 @@ public class ShowAllPhotoFragment extends Fragment {
     List<Photo>photoList = new ArrayList<>();
     List<Category> categoryList;
     int flagLayout, column;
+    List<Photo> selectedImages;
 
 
     @Override
@@ -209,6 +213,9 @@ public class ShowAllPhotoFragment extends Fragment {
                         Intent intent = new Intent(context, SeachImageActivity.class);
                         startActivity(intent);
                         break;
+                    case R.id.restorePhoto:
+                        showRestoreImageSelectionDialog(context);
+                        break;
 
                     case R.id.slideShow:
                         Intent slideshow = new Intent(context, SlideShowActivity.class);
@@ -253,9 +260,7 @@ public class ShowAllPhotoFragment extends Fragment {
                         Photo.sortByNameDescending(photoList);
                         loadImagePhotoList(layout_show_all_photo);
                         break;
-                    case R.id.restorePhoto:
-                        showImageSelectionDialog(getContext());
-                        break;
+
                 }
                 return true;
             }
@@ -282,20 +287,44 @@ public class ShowAllPhotoFragment extends Fragment {
         }
     }
 
-    private void showImageSelectionDialog(Context context) {
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageReference = storage.getReference();
-
-        StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
-
+    private void showRestoreImageSelectionDialog(Context context) {
         // Tạo một AlertDialog.Builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
 
         // Đặt tiêu đề cho AlertDialog
         builder.setTitle("Chọn hình ảnh");
 
-        List<Photo> lp = DB.getListPhoto(getContext());
+        // Khai báo thư viện Firebase Storage
+        StorageReference mStorageRef;
+
+// Khởi tạo FirebaseStorage
+        mStorageRef = FirebaseStorage.getInstance().getReference().child("images");
+
+// Tạo một danh sách để lưu trữ các URL của ảnh
+        List imageUrls = new ArrayList<>();
+        List<Photo> lp=new ArrayList<>();
+
+// Lấy danh sách tất cả các tệp tin trong thư mục trên Firebase Storage
+        mStorageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for (StorageReference item : listResult.getItems()) {
+                    // Lấy URL của từng ảnh và thêm vào danh sách
+                    item.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String imageUrl = uri.toString();
+                            //imageUrls.add(imageUrl);
+                            Photo p=new Photo();
+                            p.setFilePath(imageUrl);
+                            lp.add(p);
+                        }
+                    });
+
+                }
+            }
+        });
+
 
         // Tạo một adapter để hiển thị danh sách hình ảnh
         // Bạn cần thay đổi ImageAdapter để hỗ trợ việc đổi màu viền khi hình ảnh được chọn
@@ -307,14 +336,15 @@ public class ShowAllPhotoFragment extends Fragment {
         builder.setView(gridView);
 
         // Đặt nút OK và xử lý sự kiện khi nút OK được nhấn
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Xử lý sự kiện khi nút OK được nhấn
+                // Bạn có thể lấy danh sách các hình ảnh đã được chọn từ ImageAdapter
+                selectedImages = imageAdapter.getSelectedImages();
+                //DB.createNewAlbum(context,albumName,selectedImages);
+                //albumAdapter.setData(DB.getAlbums(context));
                 // Xử lý danh sách các hình ảnh đã được chọn ở đây
-
-
-
             }
         });
 
@@ -322,12 +352,14 @@ public class ShowAllPhotoFragment extends Fragment {
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                dialog.cancel();
             }
         });
 
         // Hiển thị AlertDialog
         builder.show();
     }
+
+
 
 }
