@@ -331,6 +331,11 @@ public class ShowAllPhotoFragment extends Fragment {
                             Photo p = new Photo();
                             p.setFilePath(imageUrl);
                             lp.add(p);
+
+                            if (lp.size() == listResult.getItems().size()) {
+                                // Dữ liệu đã sẵn sàng, cập nhật GridView hoặc thực hiện các thao tác cần thiết
+
+                            }
                         }
                     });
 
