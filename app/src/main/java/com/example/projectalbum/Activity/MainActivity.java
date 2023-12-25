@@ -18,7 +18,6 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity implements MainActivityListener {
 
     BottomNavigationView bottomNavigationView;
-    ImageButton ibtn_camera;
 
     Fragment selectedFragment = null;
 

@@ -24,6 +24,7 @@
         android:icon="@mipmap/ic_launcher_app_round"
         android:label="Album ảnh nhóm 1"
         android:requestLegacyExternalStorage="true"
+        android:requestRawExternalStorageAccess="true"
         android:roundIcon="@mipmap/ic_launcher_app_round"
         android:supportsRtl="true"
         android:largeHeap="true"

@@ -2,10 +2,14 @@ package com.example.projectalbum.Fragment;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -13,6 +17,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -210,13 +216,9 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String name = editText.getText().toString();
-//                DB.createNewAlbum(context,name);
-//                // Xử lý tạo album với tên đã nhập ở đây
-//                Album newAlbum = new Album("1", name, 0, "");
-//                listAlbum.add(newAlbum);
-//                albumAdapter.notifyDataSetChanged();
                 showImageSelectionDialog(context, name);
-//                createNewAlbum(name);
+
+
             }
         });
 
@@ -272,14 +274,8 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
                 dialog.cancel();
             }
         });
-
         // Hiển thị AlertDialog
         builder.show();
     }
-
-
-
-
-
 }
 
