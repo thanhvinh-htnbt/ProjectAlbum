@@ -40,9 +40,12 @@ import com.example.projectalbum.Database.DB;
 import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class ShowAllPhotoFragment extends Fragment {
@@ -212,7 +215,6 @@ public class ShowAllPhotoFragment extends Fragment {
                         startActivity(slideshow);
                         break;
                     case R.id.mn_camera:
-//                        Toast.makeText(context, "TakeImage", Toast.LENGTH_SHORT).show();
                         takenImg();
                         break;
 
@@ -251,7 +253,9 @@ public class ShowAllPhotoFragment extends Fragment {
                         Photo.sortByNameDescending(photoList);
                         loadImagePhotoList(layout_show_all_photo);
                         break;
-
+                    case R.id.restorePhoto:
+                        showImageSelectionDialog(getContext());
+                        break;
                 }
                 return true;
             }
@@ -259,7 +263,6 @@ public class ShowAllPhotoFragment extends Fragment {
     }
     private Uri imageUri;
     private void takenImg() {
-//        Toast.makeText(context, "TakeImage", Toast.LENGTH_SHORT).show();
         int permissionCheckStorage = ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA);
         if (permissionCheckStorage != PackageManager.PERMISSION_GRANTED) {
@@ -279,6 +282,52 @@ public class ShowAllPhotoFragment extends Fragment {
         }
     }
 
+    private void showImageSelectionDialog(Context context) {
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+
+        StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+
+        // Tạo một AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        // Đặt tiêu đề cho AlertDialog
+        builder.setTitle("Chọn hình ảnh");
+
+        List<Photo> lp = DB.getListPhoto(getContext());
+
+        // Tạo một adapter để hiển thị danh sách hình ảnh
+        // Bạn cần thay đổi ImageAdapter để hỗ trợ việc đổi màu viền khi hình ảnh được chọn
+        Image_Select_Adapter imageAdapter = new Image_Select_Adapter(context, lp);
+        GridView gridView = new GridView(context);
+        gridView.setAdapter(imageAdapter);
+        gridView.setNumColumns(3);
+
+        builder.setView(gridView);
+
+        // Đặt nút OK và xử lý sự kiện khi nút OK được nhấn
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Xử lý sự kiện khi nút OK được nhấn
+                // Xử lý danh sách các hình ảnh đã được chọn ở đây
+
+
+
+            }
+        });
+
+        // Đặt nút Cancel và xử lý sự kiện khi nút Cancel được nhấn
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        // Hiển thị AlertDialog
+        builder.show();
+    }
 
 }

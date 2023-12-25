@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.Toast;
-
 import com.example.projectalbum.Fragment.ListAlbumFragment;
 import com.example.projectalbum.Fragment.ShowAllPhotoFragment;
 import com.example.projectalbum.Interface.MainActivityListener;
@@ -93,11 +91,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
     @Override
     public void onItemAlbumClick(String name, String id) {
-        Toast.makeText(this, "id=" + id.toString(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, PhotoAlbumActivity.class);
         intent.putExtra("ID", id);
         intent.putExtra("NAME", name);
         startActivity(intent);
     }
+
+
 
 }

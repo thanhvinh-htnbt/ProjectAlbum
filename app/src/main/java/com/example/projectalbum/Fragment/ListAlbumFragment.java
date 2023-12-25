@@ -2,14 +2,10 @@ package com.example.projectalbum.Fragment;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -17,12 +13,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -49,14 +43,18 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
     private List<Album> listAlbum;
     private Context context;
     private MainActivityListener listener;
+
+    private EditText editText;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
-    public ListAlbumFragment(Context context)
-    {
+
+    public ListAlbumFragment(Context context) {
         this.context = context;
     }
+
     public void setListener(MainActivityListener listener) {
         this.listener = listener;
     }
+
     public static ListAlbumFragment newInstance(Context context) {
         ListAlbumFragment fragment = new ListAlbumFragment(context);
         fragment.setListener((MainActivityListener) context);
@@ -92,6 +90,7 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
 
         return view;
     }
+
     private void recyclerViewAlbum(View view) {
         GridLayoutManager layoutManager = new GridLayoutManager(this.context, 3);
         this.rcv_list_album = (RecyclerView) view.findViewById(R.id.rcv_list_album);
@@ -110,8 +109,7 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         return albumList;
     }
 
-    private void onPress()
-    {
+    private void onPress() {
         // Thiết lập hành động cho nút Back
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
@@ -161,31 +159,16 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         popup.inflate(R.menu.menu_album);
         popup.show();
     }
+
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.mi_them:
-                //todo
-                this.showInputCreateNewAlbum();
+                showCreateAlbumDialog(context);
                 return true;
             default:
                 return false;
         }
-    }
-
-    private void showInputCreateNewAlbum() {
-        //yêu ầu quyền ghi
-        if (ContextCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Quyền chưa được cấp, yêu cầu quyền.
-            ActivityCompat.requestPermissions((Activity) this.context,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-        } else {
-            // Quyền đã được cấp. Hiển thị EditText để người dùng nhập tên và tạo album mới.
-            showCreateAlbumDialog(context);
-        }
-        //
     }
 
     @Override
@@ -217,22 +200,23 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         builder.setTitle("Nhập tên Album mới");
 
         // Tạo một EditText
-        final EditText input = new EditText(this.context);
+        editText = new EditText(this.context);
 
         // Đặt EditText vào AlertDialog
-        builder.setView(input);
+        builder.setView(editText);
 
         // Đặt nút OK và xử lý sự kiện khi nút OK được nhấn
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String name = input.getText().toString();
+                String name = editText.getText().toString();
 //                DB.createNewAlbum(context,name);
 //                // Xử lý tạo album với tên đã nhập ở đây
 //                Album newAlbum = new Album("1", name, 0, "");
 //                listAlbum.add(newAlbum);
 //                albumAdapter.notifyDataSetChanged();
                 showImageSelectionDialog(context, name);
+//                createNewAlbum(name);
             }
         });
 
@@ -247,7 +231,9 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         // Hiển thị AlertDialog
         builder.show();
     }
+
     List<Photo> selectedImages;
+
     private void showImageSelectionDialog(Context context, String albumName) {
         // Tạo một AlertDialog.Builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
@@ -291,24 +277,9 @@ public class ListAlbumFragment extends Fragment implements AdapterListener, Popu
         builder.show();
     }
 
-    /*
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == DB.REQUEST_CODE_PERMISSION) {
-            if (resultCode == Activity.RESULT_OK) {
-                // Quyền đã được cấp, thực hiện lại yêu cầu xóa
-                DB.deletePhotos(context, selectedImages);
-                DB.deleteAllEmptyAlbums();
-                listAlbum = DB.getAlbums(context);
-                albumAdapter.setData(listAlbum);
-            } else {
-                // Người dùng từ chối cấp quyền
-                Log.e("DeleteImage", "Permission denied by user");
-            }
-        }
-    }
 
-     */
+
+
 }
+

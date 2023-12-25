@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.projectalbum.Model.Photo;
@@ -98,6 +97,7 @@ public class Image_Select_Adapter extends BaseAdapter {
             if (selected.get(i)) {
                 selectedImages.add(photos.get(i));
             }
+
         }
         return selectedImages;
     }

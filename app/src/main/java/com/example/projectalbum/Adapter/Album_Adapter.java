@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,14 +26,23 @@ public class Album_Adapter extends RecyclerView.Adapter<Album_Adapter.AlbumViewH
     private AdapterListener listener;
     private boolean isShowCheck;
 
+    public Album_Adapter(Context context, AdapterListener listener) {
+        this.context = context;
+        this.listener = listener;
+    }
     public Album_Adapter(Context context) {
         this.context = context;
     }
+
 
     public void setData(List<Album> listAlbum)
     {
         this.listAlbum = listAlbum;
         notifyDataSetChanged();
+    }
+
+    public List<Album> getData() {
+        return listAlbum;
     }
 
     //
@@ -76,8 +84,6 @@ public class Album_Adapter extends RecyclerView.Adapter<Album_Adapter.AlbumViewH
             public void onClick(View v) {
                 if(!isShowCheck) {
                     int position = holder.getAdapterPosition();
-                    String message = "Bạn đã click vào item ở vị trí " + listAlbum.get(position).getName();
-                    Toast.makeText(v.getContext(), message, Toast.LENGTH_SHORT).show();
                     //xử lý hiện danh sách ảnh của album ở đây
                     if (listener != null) {
                         listener.onItemClick(listAlbum.get(position).getName(),listAlbum.get(position).getId());
@@ -109,7 +115,6 @@ public class Album_Adapter extends RecyclerView.Adapter<Album_Adapter.AlbumViewH
                     isShowCheck = true;
                     holder.cv_item.setBackgroundResource(R.drawable.custom_item_album_selected);
                     holder.img_check.setBackgroundResource(R.drawable.drawable_checked);
-                    Toast.makeText(v.getContext(), "long click", Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;

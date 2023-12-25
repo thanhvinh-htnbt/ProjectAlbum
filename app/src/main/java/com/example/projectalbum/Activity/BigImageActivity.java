@@ -13,7 +13,6 @@ import androidx.core.content.FileProvider;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -217,8 +216,6 @@ public class BigImageActivity extends AppCompatActivity {
                                 }
                                 finish();
                                 dialog.dismiss();
-                                Intent intent = new Intent(BigImageActivity.this, MainActivity.class);
-                                startActivity(intent);
                             }
 
                         });

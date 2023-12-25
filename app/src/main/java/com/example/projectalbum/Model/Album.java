@@ -40,4 +40,11 @@ public class Album {
     public void setName(String Name) {
         this.name = name;
     }
+    public boolean isSelected() {
+        return IsSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        IsSelected = selected;
+    }
 }
