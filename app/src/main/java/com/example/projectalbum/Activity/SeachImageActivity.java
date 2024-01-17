@@ -84,6 +84,7 @@ public class SeachImageActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
 
         photoAdapter = new Photo_Adapter(this, photoList);
+        photoAdapter.setFlag(1);
         recyclerView.setAdapter(photoAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -104,7 +105,7 @@ public class SeachImageActivity extends AppCompatActivity {
         categoryAdapter = new Category_Adapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        categoryAdapter.setFlag(1);
         categoryAdapter.setData(categoryList);
         recyclerView.setAdapter(categoryAdapter);
 

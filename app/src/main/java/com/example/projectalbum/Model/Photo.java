@@ -2,6 +2,7 @@ package com.example.projectalbum.Model;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class Photo {
+public class Photo implements Serializable {
 
     private String dateTaken;
     private int id;

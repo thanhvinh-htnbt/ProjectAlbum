@@ -17,6 +17,7 @@ import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.Model.Photo;
 import com.example.projectalbum.R;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder> {
@@ -24,6 +25,7 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
     private Context context;
     private List<Photo> photoList;
     private List<Category> listCategory;
+    private int flag = 0;
 
     public Photo_Adapter(Context context, List<Photo> photoList) {
         this.context = context;
@@ -32,7 +34,12 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
 
     public void setPhotoList(List<Photo> photoList){
         this.photoList = photoList;
-        notifyDataSetChanged();}
+        notifyDataSetChanged();
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 
     public void setListCategory(List<Category> listCategory) {
         this.listCategory = listCategory;
@@ -68,6 +75,11 @@ public class Photo_Adapter extends RecyclerView.Adapter<Photo_Adapter.ViewHolder
                     intent.putExtra("imageName",imageName);
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    if(flag == 1){
+                        intent.putExtra("flag", flag);
+                        intent.putExtra("photoList", (Serializable) photoList);
+                    }
                     context.startActivity(intent);
                 }
             }

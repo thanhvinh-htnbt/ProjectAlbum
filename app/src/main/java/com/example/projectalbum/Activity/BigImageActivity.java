@@ -95,8 +95,13 @@ public class BigImageActivity extends AppCompatActivity {
 
 
         context = this;
-
-        photoList = getListPhoto(context);
+        int flag = getIntent().getIntExtra("flag",0);
+        if(flag == 1){
+            photoList = (List<Photo>) getIntent().getSerializableExtra("photoList");
+        }
+        else {
+            photoList = getListPhoto(context);
+        }
 
         // Nhận giá trị kiểu string từ Intent trước
         imagePath = getIntent().getStringExtra("imagePath");

@@ -16,12 +16,14 @@ import com.example.projectalbum.Model.Category;
 import com.example.projectalbum.R;
 
 
+import java.io.Serializable;
 import java.util.List;
 
 public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.CategoryViewHolder>{
     private Context context;
     private List<Category> listCategory;
     private int column;
+    private  int flag = 0;
 
     public Category_Adapter(Context context) {
         this.context = context;
@@ -31,6 +33,10 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
     public void setData(List<Category> listCategory){
         this.listCategory = listCategory;
         notifyDataSetChanged();
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
     }
 
     public void setColumn(int column) {
@@ -64,6 +70,7 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.Cate
 
         Photo_Adapter photoAdapter = new Photo_Adapter(context.getApplicationContext(),category.getListPhoto());
         photoAdapter.setListCategory(listCategory);
+        photoAdapter.setFlag(flag);
         holder.rcvPictures.setAdapter(photoAdapter);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
